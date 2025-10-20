@@ -12,6 +12,7 @@ console.log(num1 % num2);
 let inf = Infinity;
 let mInf = -Infinity;
 
+// Not a Number
 let nan = NaN;
 
 // console.log(1 * "nan");
