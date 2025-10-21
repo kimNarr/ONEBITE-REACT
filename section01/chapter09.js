@@ -25,12 +25,15 @@ switch (animal) {
   }
   case "dog": {
     console.log("개");
+    break;
   }
   case "bird": {
     console.log("새");
+    break;
   }
   case "tiger": {
     console.log("호랑이");
+    break;
   }
   default: {
     console.log("몰라용");
