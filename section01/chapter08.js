@@ -7,10 +7,11 @@ let var2 = 10;
 let var3 = 20;
 
 let var4 = var1 ?? var2;
+console.log("var4 =", var4);
 let var5 = var1 ?? var3;
+console.log("var5 =", var5);
 let var6 = var3 ?? var2;
-
-// console.log(var4);
+console.log("var6 =", var6);
 
 // 2. typeof 연산자
 // -> 값의 타입을 문자열로 반환하는 기능을 하는 연산자
@@ -20,7 +21,7 @@ var7 = "hello";
 var7 = true;
 
 let t1 = typeof var7;
-console.log(t1);
+console.log("t1", t1);
 
 // 3. 삼항 연산자
 // -> 항을 3개 사용하는 연산자
