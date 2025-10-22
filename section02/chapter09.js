@@ -37,8 +37,11 @@ let fruitArr = [
 fruitArr.sort((a, b) => {
   a.price - b.price;
 });
-
 console.log(fruitArr);
+
+// name 기준 알파벳 순 정렬
+const fruitNameArr = fruitArr.toSorted((a, b) => a.name.localeCompare(b.name));
+console.log(fruitNameArr);
 
 arr3.sort((a, b) => {
   if (a > b) {
