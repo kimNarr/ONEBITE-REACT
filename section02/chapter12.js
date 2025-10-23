@@ -1,12 +1,13 @@
 // function add(a, b, callback) {
 //   setTimeout(() => {
 //     const sum = a + b;
+//     console.log("1", sum);
 //     callback(sum);
 //   }, 3000);
 // }
 
 // add(1, 2, (value) => {
-//   console.log(value);
+//   console.log("2", value);
 // });
 
 // 음식 주문하는 상황
