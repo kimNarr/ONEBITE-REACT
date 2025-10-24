@@ -1,6 +1,9 @@
 import "./App.css";
-import Bulb from "./components/Bulb";
-import Counter from "./components/Counter";
+
+import Register from "./components/Register";
+
+// import Bulb from "./components/Bulb";
+// import Counter from "./components/Counter";
 
 // import Main from "./components/Main";
 // import Header from "./components/Header";
@@ -35,8 +38,11 @@ function App() {
       <Button text={"블로그"}>
         <div>자식요소</div>
       </Button> */}
-      <Bulb />
-      <Counter />
+
+      {/* <Bulb />
+      <Counter /> */}
+
+      <Register />
     </>
   );
 }
