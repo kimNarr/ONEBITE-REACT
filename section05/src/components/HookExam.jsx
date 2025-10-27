@@ -1,4 +1,5 @@
 import useInput from "./../hooks/useInput";
+import { useEffect } from "react";
 
 // 3가지 hook 관련 팁
 // 1. 함수 컴포넌트, 커스텀 훅 내부에서만 호출 가능
@@ -6,8 +7,13 @@ import useInput from "./../hooks/useInput";
 // 3. 커스텀 훅을 직접 만들 수 있다. use접두사를 사용
 
 const HookExam = () => {
-  const { input, onChange } = useInput();
-  const { input2, onChange2 } = useInput();
+  const { input, onChange } = useInput("");
+  const { input2, onChange2 } = useInput("");
+
+  useEffect(() => {
+    console.log("1", input);
+    console.log("2", input2);
+  }, [input, input2]);
 
   return (
     <div>

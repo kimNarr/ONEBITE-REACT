@@ -1,7 +1,7 @@
 import "./App.css";
 
-import Register from "./components/Register";
 import HookExam from "./components/HookExam";
+// import Register from "./components/Register";
 
 // import Bulb from "./components/Bulb";
 // import Counter from "./components/Counter";
