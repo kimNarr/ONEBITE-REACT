@@ -10,19 +10,19 @@ import { Routes, Route } from "react-router-dom";
 const mockData = [
   {
     id: 1,
-    createDate: new Date().getTime(),
+    createDate: new Date("2025-10-29").getTime(),
     emotionId: 1,
     content: "1일차 일기",
   },
   {
     id: 2,
-    createDate: new Date().getTime(),
+    createDate: new Date("2025-10-28").getTime(),
     emotionId: 2,
     content: "2일차 일기",
   },
   {
     id: 3,
-    createDate: new Date().getTime(),
+    createDate: new Date("2025-9-11").getTime(),
     emotionId: 3,
     content: "3일차 일기",
   },
@@ -46,8 +46,8 @@ function reducer(state, action) {
   }
 }
 
-const DiaryStateContext = createContext(null);
-const DiaryDispatchContext = createContext(null);
+export const DiaryStateContext = createContext();
+export const DiaryDispatchContext = createContext();
 
 const App = () => {
   const [data, dispatch] = useReducer(reducer, mockData);
