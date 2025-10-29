@@ -90,29 +90,8 @@ const App = () => {
 
   return (
     <>
-      <button
-        onClick={() => {
-          onCreate(new Date().getTime(), 1, "hello");
-        }}
-      >
-        추가
-      </button>
-      <button
-        onClick={() => {
-          onUpdate(1, new Date().getTime(), 3, "수정된일기");
-        }}
-      >
-        수정
-      </button>
-      <button
-        onClick={() => {
-          onDelete(2);
-        }}
-      >
-        삭제
-      </button>
       <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider value={(onCreate, onUpdate, onUpdate)}>
+        <DiaryDispatchContext.Provider value={(onCreate, onUpdate, onDelete)}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
