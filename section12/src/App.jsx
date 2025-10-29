@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Diary from "./pages/Diary";
 import New from "./pages/New";
 import NotFound from "./pages/NotFound";
+import Button from "./components/Button";
+import Header from "./components/Header";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { getEmotionImage } from "./util/get-emotion-image";
 
@@ -39,7 +41,7 @@ const App = () => {
       </div> */}
       {/* build 시 vite 에서 제공하는 최적화 O / Data URI 로 제공됨 (캐시 이용) */}
       {/* but 이미지 개수 및 용량이 많을 경우 public 폴더에 저장하는게 유리 할 수 도있음 */}
-      <div>
+      {/* <div>
         <img src={getEmotionImage(1)} alt="매우 좋음" />
         <img src={getEmotionImage(2)} alt="좋음" />
         <img src={getEmotionImage(3)} alt="보통" />
@@ -50,10 +52,33 @@ const App = () => {
         <Link to={"/"}>home</Link>
         <Link to={"/new"}>new</Link>
         <Link to={"/diary"}>diary</Link>
-      </div>
-      <div>
-        <button onClick={onClickButton}>Home으로 이동</button>
-      </div>
+      </div> */}
+      <Header
+        text={"Header"}
+        leftChild={<Button text={"left"} />}
+        rightChild={<Button text={"right"} />}
+      />
+      <Button
+        text={"123"}
+        type={"DEFAULT"}
+        onClick={() => {
+          console.log("클릭됨");
+        }}
+      />
+      <Button
+        text={"123"}
+        type={"POSITIVE"}
+        onClick={() => {
+          console.log("클릭됨");
+        }}
+      />
+      <Button
+        text={"123"}
+        type={"NEGATIVE"}
+        onClick={() => {
+          console.log("클릭됨");
+        }}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/new" element={<New />} />
