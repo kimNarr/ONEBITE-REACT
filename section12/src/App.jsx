@@ -53,26 +53,26 @@ const App = () => {
   const [data, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(4);
 
-  const onCreate = (createdDate, emotionId, content) => {
+  const onCreate = (createDate, emotionId, content) => {
     // 새로운 일기 추가하는 기능
     dispatch({
       type: "CREATE",
       data: {
         id: idRef.current++,
-        createdDate,
+        createDate,
         emotionId,
         content,
       },
     });
   };
 
-  const onUpdate = (id, createdDate, emotionId, content) => {
+  const onUpdate = (id, createDate, emotionId, content) => {
     // 일기 수정하는 기능
     dispatch({
       type: "UPDATE",
       data: {
         id,
-        createdDate,
+        createDate,
         emotionId,
         content,
       },
@@ -91,7 +91,7 @@ const App = () => {
   return (
     <>
       <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider value={(onCreate, onUpdate, onDelete)}>
+        <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
