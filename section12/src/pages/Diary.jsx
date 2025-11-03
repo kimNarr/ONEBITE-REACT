@@ -13,7 +13,7 @@ const Diary = () => {
   const currentDiaryItem = useDiary(params.id);
 
   if (currentDiaryItem === undefined) {
-    return <div className="loading">로딩중입니다.</div>;
+    return <div className="loading">로딩중입니다....!</div>;
   }
 
   const { createDate, emotionId, content } = currentDiaryItem;
