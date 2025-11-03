@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import Editor from "../components/Editor";
 import { useContext, useEffect, useState } from "react";
 import { DiaryDispatchContext, DiaryStateContext } from "../App";
+import useDiary from "../hooks/useDiary";
 
 const Edit = () => {
   const params = useParams();
@@ -12,29 +13,14 @@ const Edit = () => {
 
   const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
 
+  const currentDiaryItem = useDiary(params.id);
+
   const onClickDelete = () => {
     if (window.confirm("정말 삭제하겠습니까? 삭제하면 복구되지 않습니다.")) {
       onDelete(params.id);
       nav("/", { replace: true });
     }
   };
-
-  const data = useContext(DiaryStateContext);
-
-  const [currentDiaryItem, setCurrentDiaryItem] = useState();
-
-  useEffect(() => {
-    const currentDiaryItem = data.find(
-      (item) => String(item.id) === String(params.id)
-    );
-
-    if (!currentDiaryItem) {
-      window.alert("존재하지 않는 일기입니다.");
-      nav("/", { replace: true });
-    }
-
-    setCurrentDiaryItem(currentDiaryItem);
-  }, [params.id]);
 
   const onSubmit = (input) => {
     if (window.confirm("수정 하시겠습니까?")) {
