@@ -1,5 +1,5 @@
 import React from "react";
-import "./emotionItem.css";
+import "./EmotionItem.css";
 import { getEmotionImage } from "../util/get-emotion-image";
 
 const EmotionItem = ({ emotionId, emotionName, isSelected, onClick }) => {
