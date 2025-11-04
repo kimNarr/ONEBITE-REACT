@@ -9,11 +9,11 @@ import usePageTitle from "../hooks/usePageTitle";
 const Diary = () => {
   const params = useParams();
 
-  usePageTitle(`${params.id}번 일기`);
-
   const nav = useNavigate();
 
   const currentDiaryItem = useDiary(params.id);
+
+  usePageTitle(`${params.id}번 일기`);
 
   if (currentDiaryItem === undefined) {
     return <div className="loading">로딩중입니다....!</div>;

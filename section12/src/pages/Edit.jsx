@@ -14,9 +14,9 @@ const Edit = () => {
 
   const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
 
-  usePageTitle(`${params.id}번 일기 수정`);
-
   const currentDiaryItem = useDiary(params.id);
+
+  usePageTitle(`${params.id}번 일기 수정`);
 
   const onClickDelete = () => {
     if (window.confirm("정말 삭제하겠습니까? 삭제하면 복구되지 않습니다.")) {
