@@ -1,11 +1,28 @@
-/* @font-face {
+@font-face {
   font-family: "NanumPenScript";
   src: url("/NanumPenScript-Regular.ttf");
-} */
+}
+
 @font-face {
   font-family: "GangwonEducationSaeum";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff")
     format("woff");
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MitmiFont";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_1@1.0/Ownglyph_meetme-Rg.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OngleipKonkon";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2412-1@1.0/Ownglyph_corncorn-Rg.woff2")
+    format("woff2");
   font-weight: normal;
   font-display: swap;
 }
@@ -28,7 +45,12 @@ body {
 }
 
 body * {
-  font-family: "GangwonEducationSaeum";
+  font-family: "OngleipKonkon";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.no-data {
+  padding: 50px 10px;
+  text-align: center;
 }

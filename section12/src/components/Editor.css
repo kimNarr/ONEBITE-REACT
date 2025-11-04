@@ -1,6 +1,7 @@
 .Editor h4 {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: normal;
+  margin-bottom: 16px;
 }
 .Editor .date_section input,
 textarea {

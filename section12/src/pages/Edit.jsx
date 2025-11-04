@@ -29,7 +29,7 @@ const Edit = () => {
     if (window.confirm("수정 하시겠습니까?")) {
       onUpdate(
         params.id,
-        input.createDate.getTime(),
+        new Date(input.createDate).toISOString(),
         input.emotionId,
         input.content
       );

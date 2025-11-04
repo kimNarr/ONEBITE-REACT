@@ -20,7 +20,7 @@ const DiaryItem = ({ id, emotionId, createDate, content }) => {
         onClick={goDiaryPage}
         className={`img_section img_section_${emotionId}`}
       >
-        <img src={getEmotionImage(emotionId)} alt="" />
+        <img src={getEmotionImage(Number(emotionId))} alt="" />
       </div>
       <div onClick={goDiaryPage} className="info_section">
         <div className="created_date">

@@ -13,11 +13,14 @@ const DiaryList = ({ data }) => {
   };
 
   const getSortedData = () => {
-    return data.toSorted((a, b) => {
+    // return data?.toSorted((a, b) => {
+    return [...data].sort((a, b) => {
       if (sortType === "oldest") {
-        return Number(a.createDate) - Number(b.createDate);
+        // return Number(a.createDate) - Number(b.createDate);
+        return new Date(a.createDate) - new Date(b.createDate);
       } else {
-        return Number(b.createDate) - Number(a.createDate);
+        // return Number(b.createDate) - Number(a.createDate);
+        return new Date(b.createDate) - new Date(a.createDate);
       }
     });
   };
@@ -38,9 +41,14 @@ const DiaryList = ({ data }) => {
         />
       </div>
       <div className="list_wrapper">
-        {sortedData.map((item) => (
+        {/* {sortedData?.map((item) => (
           <DiaryItem key={item.id} {...item} />
-        ))}
+        ))} */}
+        {sortedData && sortedData.length > 0 ? (
+          sortedData.map((item) => <DiaryItem key={item.id} {...item} />)
+        ) : (
+          <p className="no-data">작성된 일기가 없습니다 😢</p>
+        )}
       </div>
     </div>
   );

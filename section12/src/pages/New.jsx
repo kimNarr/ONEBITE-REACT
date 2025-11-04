@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import Editor from "../components/Editor";
@@ -10,24 +10,24 @@ const New = () => {
   const nav = useNavigate();
   const { onCreate } = useContext(DiaryDispatchContext);
 
-  const onSubmit = (input) => {
-    onCreate(input.createDate.getTime(), input.emotionId, input.content);
-    nav("/", { replace: true });
+  const onSubmit = async (input) => {
+    const success = await onCreate(
+      new Date(input.createDate).toISOString(), // 또는 getTime(), DB 타입에 맞게
+      input.emotionId,
+      input.content
+    );
+    if (success) {
+      nav("/", { replace: true });
+    }
   };
+
   usePageTitle("새 일기 쓰기");
 
   return (
     <div>
       <Header
         title={"새 일기 쓰기"}
-        leftChild={
-          <Button
-            onClick={() => {
-              nav(-1);
-            }}
-            text={"< 뒤로가기"}
-          />
-        }
+        leftChild={<Button onClick={() => nav(-1)} text={"< 뒤로가기"} />}
       />
       <Editor onSubmit={onSubmit} />
     </div>

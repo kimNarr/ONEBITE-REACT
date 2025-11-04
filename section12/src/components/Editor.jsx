@@ -21,7 +21,8 @@ const Editor = ({ onSubmit, initData }) => {
     let value = e.target.value;
 
     if (name === "createDate") {
-      value = new Date(value);
+      // value = new Date(value);
+      value = new Date(e.target.value);
     }
 
     setInput({
@@ -31,7 +32,15 @@ const Editor = ({ onSubmit, initData }) => {
   };
 
   const onClickSubmitButton = () => {
-    onSubmit(input);
+    // onSubmit(input);
+    if (!input.content.trim()) {
+      alert("일기 내용을 입력해주세요!");
+      return;
+    }
+    onSubmit({
+      ...input,
+      createDate: new Date(input.createDate).toISOString(),
+    });
   };
 
   const nav = useNavigate();
@@ -40,7 +49,8 @@ const Editor = ({ onSubmit, initData }) => {
     if (initData) {
       setInput({
         ...initData,
-        createDate: new Date(Number(initData.createDate)),
+        // createDate: new Date(Number(initData.createDate)),
+        createDate: new Date(initData.createDate),
       });
     }
   }, [initData]);
@@ -59,7 +69,7 @@ const Editor = ({ onSubmit, initData }) => {
       <section className="emotion_section">
         <h4>오늘의 감정</h4>
         <div className="emotion_list_wrapper">
-          {emotionList.map((item) => (
+          {emotionList?.map((item) => (
             <EmotionItem
               onClick={() => {
                 onChangeInput({
