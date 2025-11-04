@@ -1,6 +1,13 @@
-@font-face {
+/* @font-face {
   font-family: "NanumPenScript";
   src: url("/NanumPenScript-Regular.ttf");
+} */
+@font-face {
+  font-family: "GangwonEducationSaeum";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff")
+    format("woff");
+  font-weight: normal;
+  font-display: swap;
 }
 
 html,
@@ -21,5 +28,7 @@ body {
 }
 
 body * {
-  font-family: "NanumPenScript";
+  font-family: "GangwonEducationSaeum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
