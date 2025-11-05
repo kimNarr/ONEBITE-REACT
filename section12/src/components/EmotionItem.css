@@ -1,6 +1,6 @@
 .EmotionItem {
   width: calc(20% - 8px);
-  height: ;
+  height: clamp(80px, 10vw, 100px);
   background-color: rgb(236, 236, 236);
   padding: 20px 10px;
   cursor: pointer;
