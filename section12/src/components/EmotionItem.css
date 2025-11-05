@@ -1,7 +1,8 @@
 .EmotionItem {
   width: calc(20% - 8px);
+  height: ;
   background-color: rgb(236, 236, 236);
-  padding: 20px;
+  padding: 20px 10px;
   cursor: pointer;
   border-radius: 5px;
   text-align: center;
@@ -12,7 +13,7 @@
 }
 
 .EmotionItem .emotion_image {
-  max-width: 50%;
+  max-width: 30px;
   min-width: 20px;
   margin-bottom: 10px;
 }
