@@ -7,6 +7,7 @@ import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
 import { Routes, Route } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import Loading from "./components/Loading";
 
 const supabaseUrl = "https://zucdhmiaymzpzvevollp.supabase.co";
 const supabaseKey =
@@ -82,10 +83,21 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const MIN_LOADING_TIME = 1500;
+      const start = Date.now();
+
       const { data, error } = await supabase
         .from("diary")
         .select("*")
         .order("id", { ascending: false });
+
+      const elapsed = Date.now() - start;
+      const remaining = MIN_LOADING_TIME - elapsed;
+
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+
       if (error) {
         console.error(error);
         alert("데이터를 불러오지 못했습니다.");
@@ -190,8 +202,29 @@ const App = () => {
     dispatch({ type: "DELETE", data: { id } });
   };
 
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
+  };
+
   if (isLoading) {
-    return <div className="loading">로딩중입니다....!</div>;
+    return (
+      <>
+        <Loading
+          text="LOADING...!"
+          className="loading"
+          delay={30}
+          duration={1.5}
+          ease="elastic.out(1,0.3)"
+          splitType="chars"
+          from={{ opacity: 0, y: 20 }}
+          to={{ opacity: 1, y: 0 }}
+          threshold={0.1}
+          rootMargin="-100px"
+          textAlign="center"
+          onLetterAnimationComplete={handleAnimationComplete}
+        />
+      </>
+    );
   }
 
   return (
