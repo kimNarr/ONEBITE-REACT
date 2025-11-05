@@ -38,7 +38,7 @@ const Edit = () => {
   };
 
   return (
-    <div>
+    <>
       <Header
         title={"일기 수정 하기"}
         leftChild={
@@ -46,15 +46,15 @@ const Edit = () => {
             onClick={() => {
               nav(-1);
             }}
-            text={"< 뒤로가기"}
+            text={"<"}
           />
         }
         rightChild={
-          <Button onClick={onClickDelete} text={"삭제하기"} type={"NEGATIVE"} />
+          <Button onClick={onClickDelete} text={"삭제"} type={"NEGATIVE"} />
         }
       />
       <Editor initData={currentDiaryItem} onSubmit={onSubmit} />
-    </div>
+    </>
   );
 };
 

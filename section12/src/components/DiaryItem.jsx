@@ -29,7 +29,7 @@ const DiaryItem = ({ id, emotionId, createDate, content }) => {
         <div className="content">{content}</div>
       </div>
       <div className="button_section">
-        <Button onClick={goEditPage} text={"수정하기"} />
+        <Button onClick={goEditPage} text={"수정"} />
       </div>
     </div>
   );

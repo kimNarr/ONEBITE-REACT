@@ -26,16 +26,16 @@ const Diary = () => {
   const title = getStringedDate(new Date(createDate));
 
   return (
-    <div>
+    <>
       <Header
         title={`${title} 일기`}
-        leftChild={<Button text={"< 뒤로가기"} onClick={() => nav(-1)} />}
+        leftChild={<Button text={"<"} onClick={() => nav(-1)} />}
         rightChild={
-          <Button text={"수정하기"} onClick={() => nav(`/edit/${params.id}`)} />
+          <Button text={"수정"} onClick={() => nav(`/edit/${params.id}`)} />
         }
       />
       <Viewer emotionId={emotionId} content={content} />
-    </div>
+    </>
   );
 };
 

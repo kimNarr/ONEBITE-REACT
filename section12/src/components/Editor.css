@@ -1,7 +1,18 @@
-.Editor h4 {
-  font-size: 22px;
+.Editor {
+  padding: 10px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.Editor section {
+}
+
+.Editor section h4 {
+  font-size: 18px;
   font-weight: normal;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .Editor .date_section input,
 textarea {
@@ -20,8 +31,9 @@ textarea {
 }
 .Editor .emotion_section .emotion_list_wrapper {
   display: flex;
-  justify-content: space-around;
-  gap: 2%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 .Editor .content_section {

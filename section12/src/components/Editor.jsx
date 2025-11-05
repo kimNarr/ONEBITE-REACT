@@ -106,13 +106,9 @@ const Editor = ({ onSubmit, initData }) => {
           onClick={() => {
             nav(-1);
           }}
-          text={"취소하기"}
+          text={"취소"}
         />
-        <Button
-          onClick={onClickSubmitButton}
-          text={"작성완료"}
-          type={"POSITIVE"}
-        />
+        <Button onClick={onClickSubmitButton} text={"저장"} type={"POSITIVE"} />
       </section>
     </div>
   );
