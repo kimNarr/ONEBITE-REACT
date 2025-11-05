@@ -20,6 +20,11 @@ const Editor = ({ onSubmit, initData }) => {
     let name = e.target.name;
     let value = e.target.value;
 
+    // if (value !== new Date().toISOString().slice(0, 10)) {
+    //   alert("날짜 형식이 올바르지 않습니다!");
+    //   return;
+    // }
+
     if (name === "createDate") {
       // value = new Date(value);
       value = new Date(e.target.value);
@@ -64,6 +69,7 @@ const Editor = ({ onSubmit, initData }) => {
           onChange={onChangeInput}
           type="date"
           value={getStringedDate(input.createDate)}
+          // readOnly
         />
       </section>
       <section className="emotion_section">

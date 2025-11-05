@@ -12,11 +12,22 @@
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.DiaryList .menu_bar input[type="date"] {
+  border-radius: 5px;
+  background-color: rgb(236, 236, 236);
+  border: none;
+  font-size: 16px;
+  padding: 0 10px;
   line-height: 1;
   cursor: pointer;
 }
 
 .DiaryList .menu_bar button {
   flex: 1;
+  font-size: 16px;
 }

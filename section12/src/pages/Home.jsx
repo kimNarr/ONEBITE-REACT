@@ -37,16 +37,24 @@ const Home = () => {
   const [pivotDate, setPivotDate] = useState(new Date());
   const nowYear = pivotDate.getFullYear();
   const nowMonth = pivotDate.getMonth();
+  const [filterDate, setFilterDate] = useState("");
   usePageTitle("감정 일기장");
 
   const monthlyData = getMonthlyData(pivotDate, data);
 
   const onIncreaseMonth = () => {
     setPivotDate(new Date(nowYear, nowMonth + 1));
+    setFilterDate("");
   };
   const onDecreaseMonth = () => {
     setPivotDate(new Date(nowYear, nowMonth - 1));
+    setFilterDate("");
   };
+
+  const onFilterDateChange = (date) => {
+    setFilterDate(date);
+  };
+
   return (
     <>
       <Header
@@ -54,7 +62,11 @@ const Home = () => {
         leftChild={<Button text={"<"} onClick={onDecreaseMonth} />}
         rightChild={<Button text={">"} onClick={onIncreaseMonth} />}
       />
-      <DiaryList data={monthlyData} />
+      <DiaryList
+        data={monthlyData}
+        filterDate={filterDate}
+        onFilterDateChange={onFilterDateChange}
+      />
     </>
   );
 };
