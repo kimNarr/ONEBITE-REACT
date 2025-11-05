@@ -212,7 +212,7 @@ const App = () => {
         <Loading
           text="LOADING...!"
           className="loading"
-          delay={30}
+          delay={20}
           duration={1.5}
           ease="elastic.out(1,0.3)"
           splitType="chars"
