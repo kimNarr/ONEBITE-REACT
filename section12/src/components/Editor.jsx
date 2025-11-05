@@ -30,10 +30,10 @@ const Editor = ({ onSubmit, initData }) => {
       value = new Date(e.target.value);
     }
 
-    setInput({
-      ...input,
+    setInput((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const onClickSubmitButton = () => {
@@ -75,7 +75,7 @@ const Editor = ({ onSubmit, initData }) => {
       <section className="emotion_section">
         <h4>오늘의 감정</h4>
         <div className="emotion_list_wrapper">
-          {emotionList?.map((item) => (
+          {emotionList?.map((item, idx) => (
             <EmotionItem
               onClick={() => {
                 onChangeInput({
@@ -87,7 +87,7 @@ const Editor = ({ onSubmit, initData }) => {
               }}
               key={item.emotionId}
               {...item}
-              isSelected={item.emotionId === input.emotionId}
+              isSelected={String(item.emotionId) === String(input.emotionId)}
             />
           ))}
         </div>
