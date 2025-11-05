@@ -86,5 +86,5 @@ body {
 
 header + div {
   position: relative;
-  height: calc(90vh - 10px);
+  height: calc(90dvh - 10px);
 }

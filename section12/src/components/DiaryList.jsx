@@ -16,6 +16,10 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
     onFilterDateChange(e.target.value);
   };
 
+  const onResetDate = () => {
+    onFilterDateChange("");
+  };
+
   // const getSortedData = () => {
   //   // return data?.toSorted((a, b) => {
   //   return [...data].sort((a, b) => {
@@ -61,17 +65,15 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
           <option value={"latest"}>최신순</option>
           <option value={"oldest"}>오래된순</option>
         </select>
-        <input
-          type="date"
-          name="createDate"
-          onChange={onChangeFilterDate}
-          value={filterDate}
-        />
-        <Button
-          text={"새 일기"}
-          type={"POSITIVE"}
-          onClick={() => nav("/new")}
-        />
+        <div className="date_input">
+          <input
+            type="date"
+            name="createDate"
+            onChange={onChangeFilterDate}
+            value={filterDate}
+          />
+          <Button text={"↺"} onClick={onResetDate} />
+        </div>
       </div>
       <div className="list_wrapper">
         {/* {sortedData?.map((item) => (
@@ -82,6 +84,13 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
         ) : (
           <p className="no-data">작성된 일기가 없습니다 😢</p>
         )}
+      </div>
+      <div className="new_diary">
+        <Button
+          text={"새 일기 +"}
+          type={"POSITIVE"}
+          onClick={() => nav("/new")}
+        />
       </div>
     </div>
   );
