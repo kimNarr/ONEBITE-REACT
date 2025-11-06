@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Button from "./Button";
 import "./DiaryList.css";
 import DiaryItem from "./DiaryItem";
@@ -8,6 +8,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
   const nav = useNavigate();
   const [sortType, setSortType] = useState("latest");
   const [type, setType] = useState("text");
+  const dateRef = useRef(null);
 
   const onChangeSortType = (e) => {
     setSortType(e.target.value);
@@ -20,6 +21,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
   const onResetDate = () => {
     onFilterDateChange("");
     setType("text");
+    dateRef.current?.blur();
   };
 
   // const getSortedData = () => {
@@ -69,15 +71,12 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
         </select>
         <div className="date_input">
           <input
-            type={type}
+            ref={dateRef}
+            type="date"
             name="createDate"
             onChange={onChangeFilterDate}
             value={filterDate}
-            onFocus={() => setType("date")}
-            onBlur={() => {
-              if (!filterDate) setType("text");
-            }}
-            placeholder="날짜 검색"
+            data-placeholder="날짜 검색"
           />
           <Button text={"↺"} onClick={onResetDate} />
         </div>
