@@ -25,9 +25,10 @@ textarea {
 .Editor .content_section textarea {
   width: 100%;
   min-height: 200px;
-  resize: vertical;
+  resize: none;
   box-sizing: border-box;
   padding: 20px;
+  scrollbar-width: thin;
 }
 .Editor .emotion_section .emotion_list_wrapper {
   display: flex;

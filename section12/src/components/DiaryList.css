@@ -33,7 +33,8 @@
   gap: 8px;
 }
 
-.DiaryList .menu_bar .date_input input[type="date"] {
+.DiaryList .menu_bar .date_input input {
+  width: 150px;
   border-radius: 5px;
   background-color: rgb(236, 236, 236);
   border: none;

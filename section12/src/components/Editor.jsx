@@ -20,8 +20,8 @@ const Editor = ({ onSubmit, initData }) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    // if (value !== new Date().toISOString().slice(0, 10)) {
-    //   alert("날짜 형식이 올바르지 않습니다!");
+    // if (value > new Date().toISOString().slice(0, 10)) {
+    //   alert("오늘 날짜 이후로 선택할 수 없습니다.");
     //   return;
     // }
 
@@ -69,13 +69,13 @@ const Editor = ({ onSubmit, initData }) => {
           onChange={onChangeInput}
           type="date"
           value={getStringedDate(input.createDate)}
-          // readOnly
+          readOnly
         />
       </section>
       <section className="emotion_section">
         <h4>오늘의 감정</h4>
         <div className="emotion_list_wrapper">
-          {emotionList?.map((item, idx) => (
+          {emotionList?.map((item) => (
             <EmotionItem
               onClick={() => {
                 onChangeInput({

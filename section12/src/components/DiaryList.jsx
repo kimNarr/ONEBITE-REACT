@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
   const nav = useNavigate();
   const [sortType, setSortType] = useState("latest");
+  const [type, setType] = useState("text");
 
   const onChangeSortType = (e) => {
     setSortType(e.target.value);
@@ -67,10 +68,15 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
         </select>
         <div className="date_input">
           <input
-            type="date"
+            type={type}
             name="createDate"
             onChange={onChangeFilterDate}
             value={filterDate}
+            onFocus={() => setType("date")}
+            onBlur={() => {
+              if (!filterDate) setType("text");
+            }}
+            placeholder="날짜 검색"
           />
           <Button text={"↺"} onClick={onResetDate} />
         </div>
