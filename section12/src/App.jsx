@@ -117,7 +117,7 @@ const App = () => {
   // console.log(localStorage.getItem("test"));
   // console.log(JSON.parse(localStorage.getItem("person")));
 
-  // JASON.stringify()  문자열로 변환
+  // JSON.stringify()  문자열로 변환
   // JSON.parse()      다시 객체로 변환
   // JSON.parse(null 또는 undefined) => 오류
 
