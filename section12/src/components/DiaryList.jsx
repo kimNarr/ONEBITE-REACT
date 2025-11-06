@@ -73,6 +73,11 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
           new Date(item.createDate).toLocaleDateString("en-CA") === filterDate
       );
     }
+
+    if (filterDate === "") {
+      setType(false);
+    }
+
     return sorted;
   }, [data, sortType, filterDate]);
 
