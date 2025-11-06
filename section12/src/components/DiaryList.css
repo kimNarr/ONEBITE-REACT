@@ -28,12 +28,28 @@
 
 .DiaryList .menu_bar .date_input {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
   gap: 8px;
 }
 
-.DiaryList .menu_bar .date_input input {
+.DiaryList .menu_bar .date_input .date {
+  position: relative;
+}
+
+.DiaryList .menu_bar .date_input .date label {
+  position: absolute;
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: rgb(236, 236, 236);
+  align-content: center;
+  padding-left: 10px;
+}
+
+.DiaryList .menu_bar .date_input .date label.disable {
+  display: none;
+}
+
+.DiaryList .menu_bar .date_input .date input {
   width: 150px;
   border-radius: 5px;
   background-color: rgb(236, 236, 236);
