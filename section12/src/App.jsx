@@ -9,9 +9,8 @@ import { Routes, Route } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import Loading from "./components/Loading";
 
-const supabaseUrl = "https://zucdhmiaymzpzvevollp.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1Y2RobWlheW16cHp2ZXZvbGxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyMTg5MjMsImV4cCI6MjA3Nzc5NDkyM30.t1kfVVzLtvpBDGx6XzZzNHkCmfG1b0RFtvwBzJGOg5U";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 function reducer(state, action) {

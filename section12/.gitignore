@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .vercel
+
+
+# Environment files (비밀키 / 설정)
+.env
+.env.local
+.env.development
+.env.production
