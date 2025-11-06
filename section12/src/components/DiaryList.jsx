@@ -19,6 +19,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
 
   const onResetDate = () => {
     onFilterDateChange("");
+    setType("text");
   };
 
   // const getSortedData = () => {
