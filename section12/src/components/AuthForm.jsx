@@ -19,6 +19,16 @@ export default function AuthForm({ onAuth }) {
 
       if (mode === "signup") {
         const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
+        const passwordRegex =
+          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,15}$/;
+
+        // ✅ 닉네임 유효성 검사
+        if (nickname.length > 15) {
+          alert("닉네임은 15자 이하로 입력해주세요.");
+          setLoading(false);
+          return;
+        }
+
         if (koreanRegex.test(nickname)) {
           alert("닉네임에 한글을 사용할 수 없습니다.");
           setNickname("");
@@ -27,12 +37,22 @@ export default function AuthForm({ onAuth }) {
           return;
         }
 
-        const { error } = await supabase
+        // ✅ 비밀번호 유효성 검사
+        if (!passwordRegex.test(password)) {
+          alert(
+            "비밀번호는 6~15자 사이이며, 영문자, 숫자, 특수문자를 모두 포함해야 합니다."
+          );
+          setLoading(false);
+          return;
+        }
+
+        // ✅ 실제 DB에 유저 추가
+        const { error: insertError } = await supabase
           .from("users")
           .insert([{ nickname, password }]);
 
-        if (error) {
-          if (error.code === "23505") {
+        if (insertError) {
+          if (insertError.code === "23505") {
             alert("이미 존재하는 닉네임입니다.");
           } else {
             alert("회원가입 중 오류가 발생했습니다.");
@@ -41,9 +61,10 @@ export default function AuthForm({ onAuth }) {
           return;
         }
 
+        // ✅ DB 등록 성공 후에만 알림 표시
         alert("회원가입 완료!");
 
-        // 🔹 회원가입 직후 자동 로그인
+        // ✅ 자동 로그인 시도
         const { data: newUser, error: loginError } = await supabase
           .from("users")
           .select("*")
