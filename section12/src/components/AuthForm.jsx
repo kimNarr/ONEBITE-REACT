@@ -12,18 +12,28 @@ export default function AuthForm({ onAuth }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // 로딩 시작
 
     try {
       let user = null;
 
       // 🔹 회원가입
       if (mode === "signup") {
+        const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
+        if (koreanRegex.test(nickname)) {
+          alert("닉네임에 한글을 사용할 수 없습니다.");
+          setLoading(false);
+          return;
+        }
+
         const { error } = await supabase
           .from("users")
           .insert([{ nickname, password }])
-          .confirm("가입에 성공");
-        if (error) throw error;
+          .confirm("회원가입 완료!");
+        if (error) {
+          alert("회원가입 중 오류가 발생했습니다.");
+          setLoading(false);
+          return;
+        }
 
         // 🔹 회원가입 직후 자동 로그인
         const { data: newUser, error: loginError } = await supabase
@@ -34,7 +44,9 @@ export default function AuthForm({ onAuth }) {
           .single();
 
         if (loginError || !newUser) {
-          throw new Error("자동 로그인에 실패했습니다.");
+          alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
+          // setLoading(false);
+          return;
         }
 
         user = newUser;
@@ -49,7 +61,7 @@ export default function AuthForm({ onAuth }) {
 
         if (loginError || !loginUser) {
           alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
-          setLoading(false);
+          // setLoading(false);
           return;
         }
 
