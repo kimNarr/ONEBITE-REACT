@@ -38,15 +38,25 @@ const App = () => {
   // 로그인 상태 초기화
   useEffect(() => {
     const initAuth = async () => {
+      const MIN_LOADING_TIME = 1500; // ✅ 강제 로딩 시간
+      const start = Date.now();
       try {
-        // Supabase Auth 대신 직접 user 정보 fetch (닉네임 로그인용일 경우 로컬 저장 사용 가능)
         const savedUser = JSON.parse(localStorage.getItem("user"));
         if (savedUser) setUser(savedUser);
       } catch (e) {
         console.error(e);
       }
+
+      // 최소 2.5초 로딩 유지
+      const elapsed = Date.now() - start;
+      const remaining = MIN_LOADING_TIME - elapsed;
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+
       setIsLoading(false);
     };
+
     initAuth();
   }, []);
 
@@ -56,8 +66,10 @@ const App = () => {
   };
 
   const onLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+    if (confirm("로그아웃 하시겠습니까?")) {
+      setUser(null);
+      localStorage.removeItem("user");
+    }
   };
 
   // 데이터 불러오기 (로그인 후)

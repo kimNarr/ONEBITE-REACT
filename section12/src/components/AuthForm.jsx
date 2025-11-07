@@ -14,43 +14,57 @@ export default function AuthForm({ onAuth }) {
     e.preventDefault();
     setLoading(true); // 로딩 시작
 
-    const start = Date.now(); // 시작시간 측정
-
     try {
+      let user = null;
+
+      // 🔹 회원가입
       if (mode === "signup") {
         const { error } = await supabase
           .from("users")
-          .insert([{ nickname, password }]);
+          .insert([{ nickname, password }])
+          .confirm("가입에 성공");
         if (error) throw error;
+
+        // 🔹 회원가입 직후 자동 로그인
+        const { data: newUser, error: loginError } = await supabase
+          .from("users")
+          .select("*")
+          .eq("nickname", nickname)
+          .eq("password", password)
+          .single();
+
+        if (loginError || !newUser) {
+          throw new Error("자동 로그인에 실패했습니다.");
+        }
+
+        user = newUser;
+      } else {
+        // 🔹 로그인 시도
+        const { data: loginUser, error: loginError } = await supabase
+          .from("users")
+          .select("*")
+          .eq("nickname", nickname)
+          .eq("password", password)
+          .single();
+
+        if (loginError || !loginUser) {
+          alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
+          setLoading(false);
+          return;
+        }
+
+        user = loginUser;
       }
 
-      // 로그인 시도
-      const { data: user, error: loginError } = await supabase
-        .from("users")
-        .select("*")
-        .eq("nickname", nickname)
-        .eq("password", password)
-        .single();
-
-      if (loginError || !user) {
-        alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
-        setLoading(false);
-        return;
-      }
-
-      // 로그인 성공 → user 저장
+      // ✅ 로그인 성공 (회원가입 or 로그인 둘 다)
       localStorage.setItem("user", JSON.stringify(user));
       onAuth(user);
 
-      // 남은 로딩 시간 계산 (1.5초 유지)
-      const elapsed = Date.now() - start;
-      const remaining = 1500 - elapsed;
-      const wait = remaining > 0 ? remaining : 0;
+      // ✅ 1.5초 로딩 강제 유지
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      setTimeout(() => {
-        setLoading(false);
-        nav("/", { replace: true });
-      }, wait);
+      setLoading(false);
+      nav("/", { replace: true });
     } catch (err) {
       console.error(err);
       alert("오류가 발생했습니다.");
@@ -61,13 +75,16 @@ export default function AuthForm({ onAuth }) {
   if (loading) {
     return (
       <Loading
-        text="잠시만 기다려주세요..."
+        text="LOADING...!"
+        className="loading"
         delay={20}
         duration={1.5}
         ease="elastic.out(1,0.3)"
         splitType="chars"
         from={{ opacity: 0, y: 20 }}
         to={{ opacity: 1, y: 0 }}
+        threshold={0.1}
+        rootMargin="-100px"
         textAlign="center"
       />
     );
