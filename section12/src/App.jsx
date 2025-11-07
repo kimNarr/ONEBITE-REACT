@@ -1,105 +1,110 @@
 import "./App.css";
-import { useReducer, useRef, createContext, useEffect, useState } from "react";
+import { useReducer, createContext, useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Diary from "./pages/Diary";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
-import { Routes, Route } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
 import Loading from "./components/Loading";
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-export const supabase = createClient(supabaseUrl, supabaseKey);
+import AuthForm from "./components/AuthForm";
+import { supabase } from "./lib/supabase";
 
 function reducer(state, action) {
-  let nextState;
   switch (action.type) {
-    case "INIT": {
+    case "INIT":
       return action.data;
-    }
-    case "CREATE": {
-      nextState = [action.data, ...state];
-      break;
-    }
-    case "UPDATE": {
-      nextState = state.map((item) =>
+    case "CREATE":
+      return [action.data, ...state];
+    case "UPDATE":
+      return state.map((item) =>
         String(item.id) === String(action.data.id) ? action.data : item
       );
-      break;
-    }
-    case "DELETE": {
-      nextState = state.filter(
-        (item) => String(item.id) !== String(action.data.id)
-      );
-      break;
-    }
+    case "DELETE":
+      return state.filter((item) => String(item.id) !== String(action.data.id));
     default:
       return state;
   }
-  return nextState;
 }
 
 export const DiaryStateContext = createContext([]);
 export const DiaryDispatchContext = createContext();
 
 const App = () => {
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [data, dispatch] = useReducer(reducer, []);
 
+  // 로그인 상태 초기화
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        // Supabase Auth 대신 직접 user 정보 fetch (닉네임 로그인용일 경우 로컬 저장 사용 가능)
+        const savedUser = JSON.parse(localStorage.getItem("user"));
+        if (savedUser) setUser(savedUser);
+      } catch (e) {
+        console.error(e);
+      }
+      setIsLoading(false);
+    };
+    initAuth();
+  }, []);
+
+  const onAuth = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
+
+  const onLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
+  // 데이터 불러오기 (로그인 후)
   useEffect(() => {
     const fetchData = async () => {
-      const MIN_LOADING_TIME = 1500;
-      const start = Date.now();
+      if (!user) return; // 로그인 안됐으면 패스
 
       const { data, error } = await supabase
         .from("diary")
         .select("*")
+        .eq("user_id", user.id)
         .order("id", { ascending: false });
-
-      const elapsed = Date.now() - start;
-      const remaining = MIN_LOADING_TIME - elapsed;
-
-      if (remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remaining));
-      }
 
       if (error) {
         console.error(error);
         alert("데이터를 불러오지 못했습니다.");
-        setIsLoading(false);
         return;
       }
-      dispatch({
-        type: "INIT",
-        data: data,
-      });
-      setIsLoading(false);
+
+      dispatch({ type: "INIT", data });
     };
+
     fetchData();
-  }, []);
+  }, [user]);
 
   const onCreate = async (createDate, emotionId, content) => {
-    // 새로운 일기 추가하는 기능
-    const { data: newDiary, error } = await supabase
-      .from("diary")
-      .insert([{ createDate, emotionId, content }])
-      .select();
-    if (error) {
-      console.error("onCreate error:", error);
+    if (!user) {
+      alert("로그인 후 이용해주세요.");
       return;
     }
-    dispatch({
-      type: "CREATE",
-      data: newDiary[0],
-    });
 
+    const { data: newDiary, error } = await supabase
+      .from("diary")
+      .insert([{ createDate, emotionId, content, user_id: user.id }])
+      .select();
+
+    if (error) {
+      console.error("onCreate error:", error);
+      alert("일기 저장 실패!");
+      return;
+    }
+
+    dispatch({ type: "CREATE", data: newDiary[0] });
     return true;
   };
 
   const onUpdate = async (id, createDate, emotionId, content) => {
-    // 일기 수정하는 기능
     const { data: updated, error } = await supabase
       .from("diary")
       .update({ createDate, emotionId, content })
@@ -116,42 +121,45 @@ const App = () => {
 
   const onDelete = async (id) => {
     const { error } = await supabase.from("diary").delete().eq("id", id);
-
     if (error) {
       console.error("삭제 오류:", error);
       return;
     }
-
     dispatch({ type: "DELETE", data: { id } });
   };
 
-  const handleAnimationComplete = () => {
-    console.log("All letters have animated!");
-  };
-
+  // 🔥 로딩 중이면 로딩 화면
   if (isLoading) {
     return (
-      <>
-        <Loading
-          text="LOADING...!"
-          className="loading"
-          delay={20}
-          duration={1.5}
-          ease="elastic.out(1,0.3)"
-          splitType="chars"
-          from={{ opacity: 0, y: 20 }}
-          to={{ opacity: 1, y: 0 }}
-          threshold={0.1}
-          rootMargin="-100px"
-          textAlign="center"
-          onLetterAnimationComplete={handleAnimationComplete}
-        />
-      </>
+      <Loading
+        text="LOADING...!"
+        className="loading"
+        delay={20}
+        duration={1.5}
+        ease="elastic.out(1,0.3)"
+        splitType="chars"
+        from={{ opacity: 0, y: 20 }}
+        to={{ opacity: 1, y: 0 }}
+        threshold={0.1}
+        rootMargin="-100px"
+        textAlign="center"
+      />
     );
   }
 
+  // 🔥 로그인 안된 상태면 로그인 페이지 표시
+  if (!user) {
+    return <AuthForm onAuth={onAuth} />;
+  }
+
+  // 🔥 로그인 되어 있으면 정상 앱 실행
   return (
     <>
+      <span className="">{user.nickname}</span>
+      <button onClick={onLogout} className="">
+        로그아웃
+      </button>
+
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
           <Routes>

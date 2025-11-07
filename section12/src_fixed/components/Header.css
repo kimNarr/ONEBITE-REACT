@@ -1,0 +1,23 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10dvh;
+  border-bottom: 1px solid rgb(226, 226, 226);
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+}
+
+header .header_center {
+  font-size: 20px;
+}
+
+header .header_left {
+}
+header .header_right {
+}
