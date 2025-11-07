@@ -14,10 +14,19 @@ const Editor = ({ onSubmit, initData }) => {
   });
 
   const onChangeInput = (e) => {
+    // console.log(e.target.name);
+    // console.log(e.target.value);
+
     let name = e.target.name;
     let value = e.target.value;
 
+    // if (value > new Date().toISOString().slice(0, 10)) {
+    //   alert("오늘 날짜 이후로 선택할 수 없습니다.");
+    //   return;
+    // }
+
     if (name === "createDate") {
+      // value = new Date(value);
       value = new Date(e.target.value);
     }
 
@@ -28,6 +37,7 @@ const Editor = ({ onSubmit, initData }) => {
   };
 
   const onClickSubmitButton = () => {
+    // onSubmit(input);
     if (!input.content.trim()) {
       alert("일기 내용을 입력해주세요!");
       return;
@@ -44,6 +54,7 @@ const Editor = ({ onSubmit, initData }) => {
     if (initData) {
       setInput({
         ...initData,
+        // createDate: new Date(Number(initData.createDate)),
         createDate: new Date(initData.createDate),
       });
     }

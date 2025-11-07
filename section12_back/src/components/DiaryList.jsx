@@ -22,6 +22,45 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
     setType(false);
   };
 
+  // const getSortedData = () => {
+  //   // return data?.toSorted((a, b) => {
+  //   return [...data].sort((a, b) => {
+  //     if (sortType === "oldest") {
+  //       return new Date(a.createDate) - new Date(b.createDate);
+  //       // return Number(a.createDate) - Number(b.createDate);
+  //     } else {
+  //       return new Date(b.createDate) - new Date(a.createDate);
+  //       // return Number(b.createDate) - Number(a.createDate);
+  //     }
+  //   });
+  // };
+
+  // const sortedData = getSortedData();
+
+  // const getProcessedData = () => {
+  //   // 정렬
+  //   const sorted = [...data].sort((a, b) => {
+  //     if (sortType === "oldest") {
+  //       return new Date(a.createDate) - new Date(b.createDate);
+  //     } else {
+  //       return new Date(b.createDate) - new Date(a.createDate);
+  //     }
+  //   });
+
+  //   // 필터링 (filterDate가 선택된 경우에만)
+  //   if (filterDate) {
+  //     return sorted.filter((item) => {
+  //       // const itemDate = new Date(item.createDate).toISOString().slice(0, 10);
+  //       const itemDate = new Date(item.createDate).toLocaleDateString("en-CA");
+  //       return itemDate === filterDate;
+  //     });
+  //   }
+
+  //   return sorted;
+  // };
+
+  // const processedData = getProcessedData();
+
   const processedData = useMemo(() => {
     const sorted = [...data].sort((a, b) => {
       const diff = new Date(a.createDate) - new Date(b.createDate);
@@ -41,6 +80,8 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
 
     return sorted;
   }, [data, sortType, filterDate]);
+
+  // console.log("filterDate", filterDate);
 
   return (
     <div className="DiaryList">
@@ -73,6 +114,9 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
         </div>
       </div>
       <div className="list_wrapper">
+        {/* {sortedData?.map((item) => (
+          <DiaryItem key={item.id} {...item} />
+        ))} */}
         {processedData && processedData.length > 0 ? (
           processedData.map((item) => <DiaryItem key={item.id} {...item} />)
         ) : (
