@@ -12,11 +12,11 @@ export default function AuthForm({ onAuth }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // setLoading(true); // ✅ 로딩 시작
 
     try {
       let user = null;
 
-      // 🔹 회원가입
       if (mode === "signup") {
         const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
         if (koreanRegex.test(nickname)) {
@@ -29,13 +29,19 @@ export default function AuthForm({ onAuth }) {
 
         const { error } = await supabase
           .from("users")
-          .insert([{ nickname, password }])
-          .confirm("회원가입 완료!");
+          .insert([{ nickname, password }]);
+
         if (error) {
-          alert("회원가입 중 오류가 발생했습니다.");
+          if (error.code === "23505") {
+            alert("이미 존재하는 닉네임입니다.");
+          } else {
+            alert("회원가입 중 오류가 발생했습니다.");
+          }
           setLoading(false);
           return;
         }
+
+        alert("회원가입 완료!");
 
         // 🔹 회원가입 직후 자동 로그인
         const { data: newUser, error: loginError } = await supabase
@@ -46,7 +52,7 @@ export default function AuthForm({ onAuth }) {
           .single();
 
         if (loginError || !newUser) {
-          alert("닉네임 또는 비밀번호가 올바르지 않습니다1.");
+          alert("자동 로그인에 실패했습니다.");
           setLoading(false);
           return;
         }
@@ -106,35 +112,25 @@ export default function AuthForm({ onAuth }) {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-3">
-        {mode === "login" ? "로그인" : "회원가입"}
-      </h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <h2>{mode === "login" ? "로그인" : "회원가입"}</h2>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="닉네임"
+          placeholder="아이디"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          className="border p-2 rounded"
         />
         <input
           type="password"
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border p-2 rounded"
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
+        <button type="submit">
           {mode === "login" ? "로그인" : "회원가입"}
         </button>
       </form>
-      <button
-        onClick={() => setMode(mode === "login" ? "signup" : "login")}
-        className="text-sm text-gray-500 mt-2 underline"
-      >
+      <button onClick={() => setMode(mode === "login" ? "signup" : "login")}>
         {mode === "login" ? "회원가입 하기" : "로그인으로 돌아가기"}
       </button>
     </div>
