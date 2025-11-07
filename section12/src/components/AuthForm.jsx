@@ -21,6 +21,8 @@ export default function AuthForm({ onAuth }) {
         const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
         if (koreanRegex.test(nickname)) {
           alert("닉네임에 한글을 사용할 수 없습니다.");
+          setNickname("");
+          setPassword("");
           setLoading(false);
           return;
         }
@@ -44,8 +46,8 @@ export default function AuthForm({ onAuth }) {
           .single();
 
         if (loginError || !newUser) {
-          alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
-          // setLoading(false);
+          alert("닉네임 또는 비밀번호가 올바르지 않습니다1.");
+          setLoading(false);
           return;
         }
 
@@ -61,7 +63,7 @@ export default function AuthForm({ onAuth }) {
 
         if (loginError || !loginUser) {
           alert("닉네임 또는 비밀번호가 올바르지 않습니다.");
-          // setLoading(false);
+          setLoading(false);
           return;
         }
 
