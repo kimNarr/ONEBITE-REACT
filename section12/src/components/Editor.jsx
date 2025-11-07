@@ -104,7 +104,7 @@ const Editor = ({ onSubmit, initData }) => {
       <section className="button_section">
         <Button
           onClick={() => {
-            nav(-1);
+            nav("/");
           }}
           text={"취소"}
         />
