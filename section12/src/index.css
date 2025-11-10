@@ -86,7 +86,7 @@ body {
 
 header + div {
   position: relative;
-  height: calc(90dvh - 10px);
+  height: calc(85dvh - 10px);
 }
 
 .loading {

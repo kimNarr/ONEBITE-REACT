@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Loading from "./components/Loading";
 import AuthForm from "./components/AuthForm";
 import { supabase } from "./lib/supabase";
+import UserInfo from "./components/UserInfo";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -103,7 +104,15 @@ const App = () => {
 
     const { data: newDiary, error } = await supabase
       .from("diary")
-      .insert([{ createDate, emotionId, content, user_id: user.id }])
+      .insert([
+        {
+          createDate,
+          emotionId,
+          content,
+          user_id: user.id,
+          nickname: user.nickname,
+        },
+      ])
       .select();
 
     if (error) {
@@ -167,10 +176,7 @@ const App = () => {
   // 🔥 로그인 되어 있으면 정상 앱 실행
   return (
     <>
-      <span className="">{user.nickname}</span>
-      <button onClick={onLogout} className="">
-        로그아웃
-      </button>
+      <UserInfo user={user} onLogout={onLogout} />
 
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
