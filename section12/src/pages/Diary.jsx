@@ -15,15 +15,15 @@ const Diary = () => {
 
   // usePageTitle(`${params.id}번 일기`);
   usePageTitle(
-    `${getStringedDate(new Date(currentDiaryItem?.createDate))} 일기`
+    `${getStringedDate(new Date(currentDiaryItem?.createdate))} 일기`
   );
 
   if (currentDiaryItem === undefined) {
     return <div className="loading">로딩중입니다....!</div>;
   }
 
-  const { createDate, emotionId, content } = currentDiaryItem;
-  const title = getStringedDate(new Date(createDate));
+  const { createdate, emotionid, content } = currentDiaryItem;
+  const title = getStringedDate(new Date(createdate));
 
   return (
     <>
@@ -34,7 +34,7 @@ const Diary = () => {
           <Button text={"수정"} onClick={() => nav(`/edit/${params.id}`)} />
         }
       />
-      <Viewer emotionId={emotionId} content={content} />
+      <Viewer emotionid={emotionid} content={content} />
     </>
   );
 };

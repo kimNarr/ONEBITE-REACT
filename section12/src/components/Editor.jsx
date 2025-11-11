@@ -8,8 +8,8 @@ import { getStringedDate } from "../util/getStringedDate";
 
 const Editor = ({ onSubmit, initData }) => {
   const [input, setInput] = useState({
-    createDate: new Date(),
-    emotionId: 3,
+    createdate: new Date(),
+    emotionid: 3,
     content: "",
   });
 
@@ -17,7 +17,7 @@ const Editor = ({ onSubmit, initData }) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    if (name === "createDate") {
+    if (name === "createdate") {
       value = new Date(e.target.value);
     }
 
@@ -34,7 +34,7 @@ const Editor = ({ onSubmit, initData }) => {
     }
     onSubmit({
       ...input,
-      createDate: new Date(input.createDate).toISOString(),
+      createdate: new Date(input.createdate).toISOString(),
     });
   };
 
@@ -44,7 +44,7 @@ const Editor = ({ onSubmit, initData }) => {
     if (initData) {
       setInput({
         ...initData,
-        createDate: new Date(initData.createDate),
+        createdate: new Date(initData.createdate),
       });
     }
   }, [initData]);
@@ -54,10 +54,10 @@ const Editor = ({ onSubmit, initData }) => {
       <section className="date_section">
         <h4>오늘의 날짜</h4>
         <input
-          name="createDate"
+          name="createdate"
           onChange={onChangeInput}
           type="date"
-          value={getStringedDate(input.createDate)}
+          value={getStringedDate(input.createdate)}
           readOnly
         />
       </section>
@@ -69,14 +69,14 @@ const Editor = ({ onSubmit, initData }) => {
               onClick={() => {
                 onChangeInput({
                   target: {
-                    name: "emotionId",
-                    value: item.emotionId,
+                    name: "emotionid",
+                    value: item.emotionid,
                   },
                 });
               }}
-              key={item.emotionId}
+              key={item.emotionid}
               {...item}
-              isSelected={String(item.emotionId) === String(input.emotionId)}
+              isSelected={String(item.emotionid) === String(input.emotionid)}
             />
           ))}
         </div>

@@ -96,7 +96,7 @@ const App = () => {
     fetchData();
   }, [user]);
 
-  const onCreate = async (createDate, emotionId, content) => {
+  const onCreate = async (createdate, emotionid, content) => {
     if (!user) {
       alert("로그인 후 이용해주세요.");
       return;
@@ -106,11 +106,10 @@ const App = () => {
       .from("diary")
       .insert([
         {
-          createDate,
-          emotionId,
+          createdate: createdate,
+          emotionid: emotionid,
           content,
           user_id: user.id,
-          nickname: user.nickname,
         },
       ])
       .select();
@@ -125,10 +124,10 @@ const App = () => {
     return true;
   };
 
-  const onUpdate = async (id, createDate, emotionId, content) => {
+  const onUpdate = async (id, createdate, emotionid, content) => {
     const { data: updated, error } = await supabase
       .from("diary")
-      .update({ createDate, emotionId, content })
+      .update({ createdate: createdate, emotionid: emotionid, content })
       .eq("id", id)
       .select();
 

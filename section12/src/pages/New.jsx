@@ -12,8 +12,8 @@ const New = () => {
 
   const onSubmit = async (input) => {
     const success = await onCreate(
-      new Date(input.createDate).toISOString(), // 또는 getTime(), DB 타입에 맞게
-      input.emotionId,
+      new Date(input.createdate).toISOString(), // 또는 getTime(), DB 타입에 맞게
+      input.emotionid,
       input.content
     );
     if (success) {

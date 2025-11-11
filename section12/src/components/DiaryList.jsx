@@ -8,6 +8,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
   const nav = useNavigate();
   const [sortType, setSortType] = useState("latest");
   const [type, setType] = useState(false);
+  console.log("list", data);
 
   const onChangeSortType = (e) => {
     setSortType(e.target.value);
@@ -24,14 +25,14 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
 
   const processedData = useMemo(() => {
     const sorted = [...data].sort((a, b) => {
-      const diff = new Date(a.createDate) - new Date(b.createDate);
+      const diff = new Date(a.createdate) - new Date(b.createdate);
       return sortType === "oldest" ? diff : -diff;
     });
 
     if (filterDate) {
       return sorted.filter(
         (item) =>
-          new Date(item.createDate).toLocaleDateString("en-CA") === filterDate
+          new Date(item.createdate).toLocaleDateString("en-CA") === filterDate
       );
     }
 
@@ -60,7 +61,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
             <input
               id="date"
               type="date"
-              name="createDate"
+              name="createdate"
               onFocus={() => setType(true)}
               onBlur={() => {
                 if (!filterDate) setType(false);

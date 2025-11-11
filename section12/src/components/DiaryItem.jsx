@@ -3,7 +3,7 @@ import { getEmotionImage } from "../util/get-emotion-image";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 
-const DiaryItem = ({ id, emotionId, createDate, content }) => {
+const DiaryItem = ({ id, emotionid, createdate, content }) => {
   const nav = useNavigate();
 
   const goDiaryPage = () => {
@@ -18,13 +18,13 @@ const DiaryItem = ({ id, emotionId, createDate, content }) => {
     <div className="DiaryItem">
       <div
         onClick={goDiaryPage}
-        className={`img_section img_section_${emotionId}`}
+        className={`img_section img_section_${emotionid}`}
       >
-        <img src={getEmotionImage(Number(emotionId))} alt="" />
+        <img src={getEmotionImage(Number(emotionid))} alt="" />
       </div>
       <div onClick={goDiaryPage} className="info_section">
         <div className="created_date">
-          {new Date(createDate).toLocaleDateString()}
+          {new Date(createdate).toLocaleDateString()}
         </div>
         <div className="content">{content}</div>
       </div>
