@@ -30,6 +30,7 @@ function reducer(state, action) {
 
 export const DiaryStateContext = createContext([]);
 export const DiaryDispatchContext = createContext();
+export const DiaryUserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -80,8 +81,16 @@ const App = () => {
 
       const { data, error } = await supabase
         .from("diary")
-        .select("*")
-        .eq("user_id", user.id)
+        .select(
+          `id,
+        createdate,
+        emotionid,
+        content,
+        user_id,
+        users (
+          nickname
+        )`
+        )
         .order("id", { ascending: false });
 
       if (error) {
@@ -129,7 +138,16 @@ const App = () => {
       .from("diary")
       .update({ createdate: createdate, emotionid: emotionid, content })
       .eq("id", id)
-      .select();
+      .select(
+        `id,
+        createdate,
+        emotionid,
+        content,
+        user_id,
+        users (
+          nickname
+        )`
+      );
 
     if (error) {
       console.error("수정 오류:", error);
@@ -167,6 +185,8 @@ const App = () => {
     );
   }
 
+  console.log("data", data);
+
   // 🔥 로그인 안된 상태면 로그인 페이지 표시
   if (!user) {
     return <AuthForm onAuth={onAuth} />;
@@ -177,17 +197,21 @@ const App = () => {
     <>
       <UserInfo user={user} onLogout={onLogout} />
 
-      <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/new" element={<New />} />
-            <Route path="/diary/:id" element={<Diary />} />
-            <Route path="/edit/:id" element={<Edit />} />
-            <Route path="/*" element={<NotFound />} />
-          </Routes>
-        </DiaryDispatchContext.Provider>
-      </DiaryStateContext.Provider>
+      <DiaryUserContext.Provider value={user}>
+        <DiaryStateContext.Provider value={data}>
+          <DiaryDispatchContext.Provider
+            value={{ onCreate, onUpdate, onDelete }}
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/new" element={<New />} />
+              <Route path="/diary/:id" element={<Diary />} />
+              <Route path="/edit/:id" element={<Edit />} />
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
+          </DiaryDispatchContext.Provider>
+        </DiaryStateContext.Provider>
+      </DiaryUserContext.Provider>
     </>
   );
 };

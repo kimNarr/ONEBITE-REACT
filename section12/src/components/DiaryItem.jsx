@@ -3,7 +3,15 @@ import { getEmotionImage } from "../util/get-emotion-image";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 
-const DiaryItem = ({ id, emotionid, createdate, content }) => {
+const DiaryItem = ({
+  id,
+  emotionid,
+  createdate,
+  content,
+  nickname,
+  user_id,
+  currentUserId,
+}) => {
   const nav = useNavigate();
 
   const goDiaryPage = () => {
@@ -14,23 +22,32 @@ const DiaryItem = ({ id, emotionid, createdate, content }) => {
     nav(`/edit/${id}`);
   };
 
+  const isOwner = String(user_id) === String(currentUserId);
+
   return (
     <div className="DiaryItem">
-      <div
+      <section
         onClick={goDiaryPage}
         className={`img_section img_section_${emotionid}`}
       >
         <img src={getEmotionImage(Number(emotionid))} alt="" />
-      </div>
-      <div onClick={goDiaryPage} className="info_section">
-        <div className="created_date">
-          {new Date(createdate).toLocaleDateString()}
+      </section>
+      <section className="info_section">
+        <div className="user_date_info">
+          <div className="nickname">{nickname}</div>
+          <div className="date">
+            {new Date(createdate).toLocaleDateString()}
+          </div>
         </div>
-        <div className="content">{content}</div>
-      </div>
-      <div className="button_section">
-        <Button onClick={goEditPage} text={"수정"} />
-      </div>
+        <div className="content_info">
+          <div onClick={goDiaryPage} className="content">
+            {content}
+          </div>
+          <div className="button_section">
+            {isOwner && <Button onClick={goEditPage} text={"수정"} />}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

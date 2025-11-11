@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import { useState, useContext } from "react";
-import { DiaryStateContext } from "../App";
+import { DiaryStateContext, DiaryUserContext } from "../App";
 import usePageTitle from "../hooks/usePageTitle";
 
 const getMonthlyData = (pivotDate, data) => {
@@ -34,6 +34,7 @@ const getMonthlyData = (pivotDate, data) => {
 
 const Home = () => {
   const data = useContext(DiaryStateContext);
+  const userId = useContext(DiaryUserContext);
   const [pivotDate, setPivotDate] = useState(new Date());
   const nowYear = pivotDate.getFullYear();
   const nowMonth = pivotDate.getMonth();
@@ -54,7 +55,6 @@ const Home = () => {
   const onFilterDateChange = (date) => {
     setFilterDate(date);
   };
-
   return (
     <>
       <Header
@@ -63,6 +63,7 @@ const Home = () => {
         rightChild={<Button text={">"} onClick={onIncreaseMonth} />}
       />
       <DiaryList
+        currentUserId={userId.id}
         data={monthlyData}
         filterDate={filterDate}
         onFilterDateChange={onFilterDateChange}

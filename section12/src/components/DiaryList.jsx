@@ -4,11 +4,10 @@ import "./DiaryList.css";
 import DiaryItem from "./DiaryItem";
 import { useNavigate } from "react-router-dom";
 
-const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
+const DiaryList = ({ data, filterDate, onFilterDateChange, currentUserId }) => {
   const nav = useNavigate();
   const [sortType, setSortType] = useState("latest");
   const [type, setType] = useState(false);
-  console.log("list", data);
 
   const onChangeSortType = (e) => {
     setSortType(e.target.value);
@@ -75,7 +74,14 @@ const DiaryList = ({ data, filterDate, onFilterDateChange }) => {
       </div>
       <div className="list_wrapper">
         {processedData && processedData.length > 0 ? (
-          processedData.map((item) => <DiaryItem key={item.id} {...item} />)
+          processedData.map((item) => (
+            <DiaryItem
+              key={item.id}
+              nickname={item.users.nickname}
+              currentUserId={currentUserId}
+              {...item}
+            />
+          ))
         ) : (
           <p className="no-data">작성된 일기가 없습니다 😢</p>
         )}
