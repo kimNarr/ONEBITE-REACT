@@ -2,7 +2,7 @@
   display: flex;
   gap: 15px;
   justify-content: space-between;
-  padding: 0 0 0 10px;
+  padding: 0 10px;
 }
 .DiaryItem:hover {
   background-color: rgba(100, 201, 100, 0.1);
