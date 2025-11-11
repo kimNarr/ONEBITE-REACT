@@ -40,7 +40,7 @@ const App = () => {
   // 로그인 상태 초기화
   useEffect(() => {
     const initAuth = async () => {
-      const MIN_LOADING_TIME = 1500; // ✅ 강제 로딩 시간
+      const MIN_LOADING_TIME = 1500; // 강제 로딩 시간
       const start = Date.now();
       try {
         const savedUser = JSON.parse(localStorage.getItem("user"));
@@ -49,7 +49,7 @@ const App = () => {
         console.error(e);
       }
 
-      // 최소 2.5초 로딩 유지
+      // 최소 1.5초 로딩 유지
       const elapsed = Date.now() - start;
       const remaining = MIN_LOADING_TIME - elapsed;
       if (remaining > 0) {
@@ -175,7 +175,7 @@ const App = () => {
     dispatch({ type: "DELETE", data: { id } });
   };
 
-  // 🔥 로딩 중이면 로딩 화면
+  // 로딩 중이면 로딩 화면
   if (isLoading) {
     return (
       <Loading
@@ -196,12 +196,12 @@ const App = () => {
 
   console.log("data", data);
 
-  // 🔥 로그인 안된 상태면 로그인 페이지 표시
+  // 로그인 안된 상태면 로그인 페이지 표시
   if (!user) {
     return <AuthForm onAuth={onAuth} />;
   }
 
-  // 🔥 로그인 되어 있으면 정상 앱 실행
+  // 로그인 되어 있으면 정상 앱 실행
   return (
     <>
       <UserInfo user={user} onLogout={onLogout} />

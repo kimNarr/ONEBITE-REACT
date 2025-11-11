@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import Loading from "./Loading";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 import "./AuthForm.css";
 
-export default function AuthForm({ onAuth }) {
+const AuthForm = ({ onAuth }) => {
   const [mode, setMode] = useState("login");
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isRememberId, setIsRememberId] = useState(false);
   const nav = useNavigate();
+
+  // 마운트 시 로컬스토리지에서 아이디 불러오기
+  useEffect(() => {
+    const savedId = localStorage.getItem("rememberedUserId");
+    if (savedId) {
+      setUserId(savedId);
+      setIsRememberId(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setLoading(true); // 로딩 시작
+    setLoading(true); // 로딩 시작
 
     try {
       let user = null;
@@ -50,10 +60,6 @@ export default function AuthForm({ onAuth }) {
         }
 
         // 회원가입처리
-        // const { error: insertError } = await supabase
-        //   .from("users")
-        //   .insert([{ userId, nickname, password }]);
-
         const hashedPassword = await bcrypt.hash(password, 10); // 10은 saltRounds
 
         const { error: insertError } = await supabase
@@ -109,6 +115,12 @@ export default function AuthForm({ onAuth }) {
       }
 
       // 로그인 성공 (회원가입 or 로그인 둘 다)
+      if (isRememberId) {
+        localStorage.setItem("rememberedUserId", userId);
+      } else {
+        localStorage.removeItem("rememberedUserId");
+      }
+
       localStorage.setItem("user", JSON.stringify(user));
       onAuth(user);
 
@@ -187,6 +199,15 @@ export default function AuthForm({ onAuth }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <div className="remember-id-checkbox">
+              <input
+                type="checkbox"
+                id="rememberId"
+                checked={isRememberId}
+                onChange={(e) => setIsRememberId(e.target.checked)}
+              />
+              <label htmlFor="rememberId">아이디 기억하기</label>
+            </div>
             <button type="submit">
               {mode === "login" ? "로그인" : "회원가입"}
             </button>
@@ -195,4 +216,6 @@ export default function AuthForm({ onAuth }) {
       </section>
     </div>
   );
-}
+};
+
+export default AuthForm;

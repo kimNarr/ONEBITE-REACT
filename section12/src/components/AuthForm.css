@@ -82,3 +82,15 @@ form {
   color: #fff;
   background-color: rgb(100, 201, 100);
 }
+
+.remember-id-checkbox {
+  display: flex;
+  gap: 10px;
+}
+.remember-id-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.remember-id-checkbox input[type="checkbox"] + label {
+}
