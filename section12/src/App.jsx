@@ -121,7 +121,16 @@ const App = () => {
           user_id: user.id,
         },
       ])
-      .select();
+      .select(
+        `id,
+        createdate,
+        emotionid,
+        content,
+        user_id,
+        users (
+          nickname
+        )`
+      );
 
     if (error) {
       console.error("onCreate error:", error);
