@@ -32,7 +32,7 @@ const DiaryItem = ({
       >
         <img src={getEmotionImage(Number(emotionid))} alt="" />
       </section>
-      <section className="info_section">
+      <section onClick={goDiaryPage} className="info_section">
         <div className="user_date_info">
           <div className="nickname">{nickname}</div>
           <div className="date">
@@ -40,12 +40,7 @@ const DiaryItem = ({
           </div>
         </div>
         <div className="content_info">
-          <div onClick={goDiaryPage} className="content">
-            {content}
-          </div>
-          <div className="button_section">
-            {isOwner && <Button onClick={goEditPage} text={"수정"} />}
-          </div>
+          <div className="content">{content}</div>
         </div>
       </section>
     </div>
