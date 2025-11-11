@@ -9,6 +9,9 @@
 
 .title {
   font-size: 16px;
+  cursor: pointer;
+  height: 100%;
+  align-content: center;
 }
 
 .user {
