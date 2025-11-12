@@ -5,11 +5,14 @@ import Home from "./pages/Home";
 import Diary from "./pages/Diary";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
+import List from "./pages/List";
+import AccountPage from "./components/AccountPage";
 import NotFound from "./pages/NotFound";
 import Loading from "./components/Loading";
 import AuthForm from "./components/AuthForm";
 import UserInfo from "./components/UserInfo";
 import { supabase } from "./lib/supabase";
+import MyDiaryList from "./components/MyDiary";
 
 // ========================
 // Reducer
@@ -37,6 +40,7 @@ function reducer(state, action) {
 export const DiaryStateContext = createContext([]);
 export const DiaryDispatchContext = createContext();
 export const DiaryUserContext = createContext(null);
+export const DiaryUserSetterContext = createContext(() => {});
 
 // ========================
 // App Component
@@ -46,14 +50,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, dispatch] = useReducer(reducer, []);
 
-  // ✅ 잘못된 사용자 처리 (DB에 없는 계정)
+  // 잘못된 사용자 처리 (DB에 없는 계정)
   const handleInvalidUser = () => {
     alert("유효하지 않은 계정입니다. 다시 로그인해주세요.");
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  // ✅ 로그인 초기화 및 유효성 검증
+  // 로그인 초기화 및 유효성 검증
   useEffect(() => {
     const initAuth = async () => {
       const MIN_LOADING_TIME = 1500;
@@ -99,13 +103,13 @@ const App = () => {
     initAuth();
   }, []);
 
-  // ✅ 로그인/회원가입 후 Auth 상태 설정
+  // 로그인/회원가입 후 Auth 상태 설정
   const onAuth = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  // ✅ 정상 로그아웃
+  // 정상 로그아웃
   const onLogout = () => {
     if (confirm("로그아웃 하시겠습니까?")) {
       localStorage.removeItem("user");
@@ -113,7 +117,7 @@ const App = () => {
     }
   };
 
-  // ✅ DB에서 유저 존재 확인 함수
+  // DB에서 유저 존재 확인 함수
   const ensureUserExists = async (userId) => {
     const { data, error } = await supabase
       .from("users")
@@ -123,7 +127,7 @@ const App = () => {
     return !error && !!data;
   };
 
-  // ✅ 일기 목록 불러오기
+  // 일기 목록 불러오기
   useEffect(() => {
     const fetchData = async () => {
       if (!user) return;
@@ -156,7 +160,7 @@ const App = () => {
     fetchData();
   }, [user]);
 
-  // ✅ CREATE
+  // CREATE
   const onCreate = async (createdate, emotionid, content) => {
     if (!user) return alert("로그인 후 이용해주세요.");
 
@@ -185,7 +189,7 @@ const App = () => {
     return true;
   };
 
-  // ✅ UPDATE
+  // UPDATE
   const onUpdate = async (id, createdate, emotionid, content) => {
     const valid = await ensureUserExists(user.id);
     if (!valid) return handleInvalidUser();
@@ -211,7 +215,7 @@ const App = () => {
     dispatch({ type: "UPDATE", data: updated[0] });
   };
 
-  // ✅ DELETE
+  // DELETE
   const onDelete = async (id) => {
     const valid = await ensureUserExists(user.id);
     if (!valid) return handleInvalidUser();
@@ -224,7 +228,7 @@ const App = () => {
     dispatch({ type: "DELETE", data: { id } });
   };
 
-  // ✅ 로딩 중
+  // 로딩 중
   if (isLoading) {
     return (
       <Loading
@@ -243,29 +247,36 @@ const App = () => {
     );
   }
 
-  // ✅ 로그인 안 된 상태
+  // 로그인 안 된 상태
   if (!user) {
     return <AuthForm onAuth={onAuth} />;
   }
 
-  // ✅ 로그인된 상태 → 앱 실행
+  // 로그인된 상태 → 앱 실행
   return (
     <>
-      <UserInfo user={user} onLogout={onLogout} />
-
       <DiaryUserContext.Provider value={user}>
         <DiaryStateContext.Provider value={data}>
-          <DiaryDispatchContext.Provider
-            value={{ onCreate, onUpdate, onDelete }}
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/new" element={<New />} />
-              <Route path="/diary/:id" element={<Diary />} />
-              <Route path="/edit/:id" element={<Edit />} />
-              <Route path="/*" element={<NotFound />} />
-            </Routes>
-          </DiaryDispatchContext.Provider>
+          <DiaryUserSetterContext.Provider value={setUser}>
+            <DiaryDispatchContext.Provider
+              value={{ onCreate, onUpdate, onDelete }}
+            >
+              <UserInfo user={user} onLogout={onLogout} />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/new" element={<New />} />
+                <Route path="/list" element={<List />} />
+                <Route
+                  path="/mydiary"
+                  element={<MyDiaryList setUser={setUser} />}
+                />
+                <Route path="/account" element={<AccountPage />} />
+                <Route path="/diary/:id" element={<Diary />} />
+                <Route path="/edit/:id" element={<Edit />} />
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
+            </DiaryDispatchContext.Provider>
+          </DiaryUserSetterContext.Provider>
         </DiaryStateContext.Provider>
       </DiaryUserContext.Provider>
     </>

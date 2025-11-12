@@ -86,7 +86,7 @@ body {
 
 header + div {
   position: relative;
-  height: calc(85dvh - 20px);
+  height: calc(100dvh - 115px);
 }
 
 .loading {
@@ -97,4 +97,14 @@ header + div {
   justify-content: center;
   font-size: 30px;
   font-weight: bold;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.navigation button {
 }
