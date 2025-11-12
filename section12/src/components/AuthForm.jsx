@@ -14,135 +14,153 @@ const AuthForm = ({ onAuth }) => {
   const [isRememberId, setIsRememberId] = useState(false);
   const nav = useNavigate();
 
-  // 마운트 시 로컬스토리지에서 아이디 불러오기
+  // ✅ 저장된 아이디 불러오기
   useEffect(() => {
     const savedId = localStorage.getItem("rememberedUserId");
-    if (savedId) {
+    if (savedId && mode === "login") {
       setUserId(savedId);
       setIsRememberId(true);
+    } else if (mode === "signup") {
+      setUserId("");
+      setIsRememberId(false);
     }
-  }, []);
+  }, [mode]);
 
+  // ✅ 아이디 / 닉네임 중복 검사 함수
+  const checkDuplicate = async (field, value) => {
+    const { data, error } = await supabase
+      .from("users")
+      .select("id")
+      .eq(field, value)
+      .maybeSingle();
+    if (error) console.error(error);
+    return !!data; // true = 중복 존재
+  };
+
+  // ✅ 회원가입 또는 로그인 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // 로딩 시작
+    setLoading(true);
 
     try {
       let user = null;
 
       if (mode === "signup") {
+        // 입력 검증
         const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
         const passwordRegex =
           /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,15}$/;
 
-        // 아이디 유효성 검사
-        if (userId.length > 15) {
-          alert("아이디를 15자 이하로 입력해주세요.");
-          setLoading(false);
-          return;
+        if (userId.length < 3 || userId.length > 15) {
+          alert("아이디는 3~15자 사이로 입력해주세요.");
+          return setLoading(false);
         }
-
         if (koreanRegex.test(userId)) {
           alert("아이디에 한글을 사용할 수 없습니다.");
-          setNickname("");
-          setPassword("");
-          setLoading(false);
-          return;
+          return setLoading(false);
         }
-
-        // 비밀번호 유효성 검사
+        if (!nickname.trim()) {
+          alert("닉네임을 입력해주세요.");
+          return setLoading(false);
+        }
         if (!passwordRegex.test(password)) {
           alert(
-            "비밀번호는 6~15자 사이이며, 영문자, 숫자, 특수문자를 모두 포함해야 합니다."
+            "비밀번호는 6~15자, 영문자·숫자·특수문자를 모두 포함해야 합니다."
           );
-          setLoading(false);
-          return;
+          return setLoading(false);
         }
 
-        // 회원가입처리
-        const hashedPassword = await bcrypt.hash(password, 10); // 10은 saltRounds
+        // 중복 체크
+        const isUserIdTaken = await checkDuplicate("user_id", userId);
+        if (isUserIdTaken) {
+          alert("이미 존재하는 아이디입니다.");
+          return setLoading(false);
+        }
 
+        const isNicknameTaken = await checkDuplicate("nickname", nickname);
+        if (isNicknameTaken) {
+          alert("이미 존재하는 닉네임입니다.");
+          return setLoading(false);
+        }
+
+        // 비밀번호 해시 후 저장
+        const hashedPassword = await bcrypt.hash(password, 10);
         const { error: insertError } = await supabase
           .from("users")
           .insert([{ user_id: userId, nickname, password: hashedPassword }]);
 
         if (insertError) {
-          if (insertError.code === "23505") {
-            alert("이미 존재하는 아이디 입니다.");
-          } else {
-            alert("회원가입 중 오류가 발생했습니다.");
-          }
-          setLoading(false);
-          return;
+          console.error(insertError);
+          alert("회원가입 중 오류가 발생했습니다.");
+          return setLoading(false);
         }
-        alert("회원가입 완료!");
 
-        // 자동 로그인 시도
-        const { data: newUser, error: loginError } = await supabase
+        alert("회원가입이 완료되었습니다! 자동 로그인됩니다.");
+
+        // 가입한 유저 정보 가져오기
+        const { data: newUser, error: fetchError } = await supabase
           .from("users")
           .select("*")
           .eq("user_id", userId)
           .single();
 
-        if (loginError || !newUser) {
-          alert("로그인에 실패했습니다.");
-          setLoading(false);
-          return;
+        if (fetchError || !newUser) {
+          alert("회원 정보를 불러올 수 없습니다.");
+          return setLoading(false);
         }
 
         user = newUser;
       } else {
-        // 로그인 시도
+        // ✅ 로그인 처리
         const { data: loginUser, error: loginError } = await supabase
           .from("users")
           .select("*")
           .eq("user_id", userId)
-          .single();
+          .maybeSingle();
 
         if (loginError || !loginUser) {
           alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-          setLoading(false);
-          return;
+          return setLoading(false);
         }
 
         const isValid = await bcrypt.compare(password, loginUser.password);
         if (!isValid) {
           alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-          return;
+          return setLoading(false);
         }
 
         user = loginUser;
       }
 
-      // 로그인 성공 (회원가입 or 로그인 둘 다)
+      // ✅ 로그인 유지 설정
       if (isRememberId) {
         localStorage.setItem("rememberedUserId", userId);
       } else {
         localStorage.removeItem("rememberedUserId");
       }
 
+      // ✅ 로그인 성공 시
       localStorage.setItem("user", JSON.stringify(user));
       onAuth(user);
 
-      // 1.5초 로딩 강제 유지
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       nav("/", { replace: true });
     } catch (err) {
-      console.error(err);
+      console.error("Auth Error:", err);
       alert("오류가 발생했습니다.");
+    } finally {
       setLoading(false);
     }
   };
 
+  // ✅ 로딩 표시
   if (loading) {
     return (
       <Loading
         text="LOADING...!"
         className="loading"
         delay={20}
-        duration={1.5}
+        duration={1.2}
         ease="elastic.out(1,0.3)"
         splitType="chars"
         from={{ opacity: 0, y: 20 }}
@@ -161,36 +179,42 @@ const AuthForm = ({ onAuth }) => {
           <h2 className="Title">EMOTION DIARY</h2>
           <p className="sub-title">(감정일기장)</p>
         </div>
+
+        {/* ✅ 탭 전환 */}
         <div className="Tab">
           <ul>
             <li
               className={mode === "login" ? "active" : ""}
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+              onClick={() => setMode("login")}
             >
               로그인
             </li>
             <li
               className={mode === "signup" ? "active" : ""}
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+              onClick={() => setMode("signup")}
             >
               회원가입
             </li>
           </ul>
         </div>
+
+        {/* ✅ 로그인 / 회원가입 폼 */}
         <form onSubmit={handleSubmit}>
           <div className="FormWrap">
             <input
               type="text"
               placeholder="아이디"
               value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              onChange={(e) => setUserId(e.target.value.trim())}
+              required
             />
             {mode === "signup" && (
               <input
                 type="text"
                 placeholder="닉네임"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => setNickname(e.target.value.trim())}
+                required
               />
             )}
             <input
@@ -198,16 +222,21 @@ const AuthForm = ({ onAuth }) => {
               placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
-            <div className="remember-id-checkbox">
-              <input
-                type="checkbox"
-                id="rememberId"
-                checked={isRememberId}
-                onChange={(e) => setIsRememberId(e.target.checked)}
-              />
-              <label htmlFor="rememberId">아이디 기억하기</label>
-            </div>
+
+            {mode === "login" && (
+              <div className="remember-id-checkbox">
+                <input
+                  type="checkbox"
+                  id="rememberId"
+                  checked={isRememberId}
+                  onChange={(e) => setIsRememberId(e.target.checked)}
+                />
+                <label htmlFor="rememberId">아이디 기억하기</label>
+              </div>
+            )}
+
             <button type="submit">
               {mode === "login" ? "로그인" : "회원가입"}
             </button>
