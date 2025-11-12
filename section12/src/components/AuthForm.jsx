@@ -7,6 +7,7 @@ import "./AuthForm.css";
 
 const AuthForm = ({ onAuth }) => {
   const [mode, setMode] = useState("login");
+  const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -85,11 +86,19 @@ const AuthForm = ({ onAuth }) => {
           return setLoading(false);
         }
 
+        const isEmailTaken = await checkDuplicate("email", email);
+        if (isEmailTaken) {
+          alert("이미 존재하는 이메일입니다.");
+          return setLoading(false);
+        }
+
         // 비밀번호 해시 후 저장
         const hashedPassword = await bcrypt.hash(password, 10);
         const { error: insertError } = await supabase
           .from("users")
-          .insert([{ user_id: userId, nickname, password: hashedPassword }]);
+          .insert([
+            { user_id: userId, nickname, email, password: hashedPassword },
+          ]);
 
         if (insertError) {
           console.error(insertError);
@@ -201,7 +210,7 @@ const AuthForm = ({ onAuth }) => {
         </div>
 
         {/* ✅ 로그인 / 회원가입 폼 */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="FormWrap">
             <input
               type="text"
@@ -211,19 +220,33 @@ const AuthForm = ({ onAuth }) => {
               required
             />
             {mode === "signup" && (
-              <input
-                type="text"
-                placeholder="닉네임"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value.trim())}
-                required
-              />
+              <>
+                <input
+                  type="text"
+                  placeholder="닉네임"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value.trim())}
+                  autoComplete="off"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="이메일"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value.trim())}
+                  autoComplete="off"
+                  required
+                />
+              </>
             )}
             <input
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete={
+                mode === "signup" ? "new-password" : "current-password"
+              }
               required
             />
 
