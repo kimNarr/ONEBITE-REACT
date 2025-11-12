@@ -46,7 +46,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, dispatch] = useReducer(reducer, []);
 
-  // ✅ 공통 로그아웃 처리 함수
+  // ✅ 잘못된 사용자 처리 (DB에 없는 계정)
   const handleInvalidUser = () => {
     alert("유효하지 않은 계정입니다. 다시 로그인해주세요.");
     localStorage.removeItem("user");
@@ -105,10 +105,11 @@ const App = () => {
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  // ✅ 로그아웃 처리
+  // ✅ 정상 로그아웃
   const onLogout = () => {
     if (confirm("로그아웃 하시겠습니까?")) {
-      handleInvalidUser();
+      localStorage.removeItem("user");
+      setUser(null);
     }
   };
 

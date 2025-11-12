@@ -93,4 +93,5 @@ form {
 }
 
 .remember-id-checkbox input[type="checkbox"] + label {
+  font-size: 14px;
 }
