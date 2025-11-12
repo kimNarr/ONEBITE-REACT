@@ -14,19 +14,21 @@ const AuthForm = ({ onAuth }) => {
   const [isRememberId, setIsRememberId] = useState(false);
   const nav = useNavigate();
 
-  // ✅ 저장된 아이디 불러오기
+  // 저장된 아이디 불러오기
   useEffect(() => {
     const savedId = localStorage.getItem("rememberedUserId");
     if (savedId && mode === "login") {
       setUserId(savedId);
+      setPassword("");
       setIsRememberId(true);
     } else if (mode === "signup") {
       setUserId("");
+      setPassword("");
       setIsRememberId(false);
     }
   }, [mode]);
 
-  // ✅ 아이디 / 닉네임 중복 검사 함수
+  // 아이디 / 닉네임 중복 검사 함수
   const checkDuplicate = async (field, value) => {
     const { data, error } = await supabase
       .from("users")
