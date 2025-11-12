@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import "./Editor.css";
 import EmotionItem from "./EmotionItem";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { emotionList } from "../util/constants";
 import { getStringedDate } from "../util/getStringedDate";
 
 const Editor = ({ onSubmit, initData }) => {
+  const location = useLocation();
+  const isEditMode =
+    location.pathname.includes("/new") || location.pathname.includes("/edit");
+
   const [input, setInput] = useState({
     createdate: new Date(),
     emotionid: 3,
@@ -84,6 +88,7 @@ const Editor = ({ onSubmit, initData }) => {
       <section className="content_section">
         <h4>오늘의 일기</h4>
         <textarea
+          className={isEditMode ? "editMode" : ""}
           name="content"
           value={input.content}
           onChange={onChangeInput}

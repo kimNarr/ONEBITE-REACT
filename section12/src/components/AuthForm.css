@@ -5,7 +5,7 @@
 
 .AuthForm > section {
   width: 250px;
-  padding-top: 100px;
+  height: 80%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -85,6 +85,7 @@ form {
 
 .remember-id-checkbox {
   display: flex;
+  height: 36px;
   gap: 10px;
 }
 .remember-id-checkbox input[type="checkbox"] {

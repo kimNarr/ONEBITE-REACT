@@ -30,6 +30,11 @@ textarea {
   padding: 20px;
   scrollbar-width: thin;
 }
+
+.Editor .content_section textarea.editMode {
+  border: 2px solid rgb(236, 236, 236);
+  background-color: #fff;
+}
 .Editor .emotion_section .emotion_list_wrapper {
   display: flex;
   flex-wrap: wrap;
