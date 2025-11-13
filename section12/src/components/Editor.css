@@ -23,11 +23,10 @@ textarea {
   padding: 10px 20px;
 }
 .Editor .content_section {
-  height: 100%;
+  height: calc(100% - 176px);
 }
 .Editor .content_section textarea {
   width: 100%;
-  min-height: 200px;
   height: calc(100% - 24px);
   resize: none;
   box-sizing: border-box;
