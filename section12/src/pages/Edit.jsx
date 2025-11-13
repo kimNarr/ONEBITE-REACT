@@ -21,7 +21,7 @@ const Edit = () => {
   const onClickDelete = () => {
     if (window.confirm("정말 삭제하겠습니까? 삭제하면 복구되지 않습니다.")) {
       onDelete(params.id);
-      nav("/", { replace: true });
+      nav("/list", { replace: true });
     }
   };
 
@@ -34,7 +34,7 @@ const Edit = () => {
         input.content
       );
     }
-    nav("/", { replace: true });
+    nav(`/list`, { replace: true });
   };
 
   return (

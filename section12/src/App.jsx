@@ -166,10 +166,20 @@ const App = () => {
 
     const valid = await ensureUserExists(user.id);
     if (!valid) return handleInvalidUser();
+    const dateObj =
+      typeof createdate === "string" ? new Date(createdate) : createdate;
+    const createdateKST = new Date(dateObj.getTime() + 9 * 60 * 60 * 1000);
 
     const { data: newDiary, error } = await supabase
       .from("diary")
-      .insert([{ createdate, emotionid, content, user_id: user.id }])
+      .insert([
+        {
+          createdate: createdateKST.toISOString(),
+          emotionid,
+          content,
+          user_id: user.id,
+        },
+      ])
       .select(
         `id,
         createdate,
@@ -190,13 +200,13 @@ const App = () => {
   };
 
   // UPDATE
-  const onUpdate = async (id, createdate, emotionid, content) => {
+  const onUpdate = async (id, emotionid, content) => {
     const valid = await ensureUserExists(user.id);
     if (!valid) return handleInvalidUser();
 
     const { data: updated, error } = await supabase
       .from("diary")
-      .update({ createdate, emotionid, content })
+      .update({ emotionid, content })
       .eq("id", id)
       .select(
         `id,

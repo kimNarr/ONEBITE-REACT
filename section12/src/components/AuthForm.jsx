@@ -155,6 +155,7 @@ const AuthForm = ({ onAuth }) => {
       onAuth(user);
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      setLoading(true);
       nav("/", { replace: true });
     } catch (err) {
       console.error("Auth Error:", err);

@@ -11,6 +11,8 @@ const Editor = ({ onSubmit, initData }) => {
   const isEditMode =
     location.pathname.includes("/new") || location.pathname.includes("/edit");
 
+  const nav = useNavigate();
+
   const [input, setInput] = useState({
     createdate: new Date(),
     emotionid: 3,
@@ -41,8 +43,6 @@ const Editor = ({ onSubmit, initData }) => {
       createdate: new Date(input.createdate).toISOString(),
     });
   };
-
-  const nav = useNavigate();
 
   useEffect(() => {
     if (initData) {

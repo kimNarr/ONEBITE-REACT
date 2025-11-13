@@ -17,7 +17,7 @@ const New = () => {
       input.content
     );
     if (success) {
-      nav("/", { replace: true });
+      nav("/list", { replace: true });
     }
   };
 
