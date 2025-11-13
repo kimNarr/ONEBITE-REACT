@@ -154,9 +154,23 @@ const AuthForm = ({ onAuth }) => {
       localStorage.setItem("user", JSON.stringify(user));
       onAuth(user);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setLoading(true);
-      nav("/", { replace: true });
+      // 👇 로그인 성공 시점에 키보드 닫기 + 스크롤 리셋
+      if (
+        document.activeElement &&
+        typeof document.activeElement.blur === "function"
+      ) {
+        document.activeElement.blur();
+      }
+      window.scrollTo(0, 0);
+
+      setTimeout(() => {
+        setLoading(true);
+        nav("/", { replace: true });
+      }, 50);
+
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // setLoading(true);
+      // nav("/", { replace: true });
     } catch (err) {
       console.error("Auth Error:", err);
       alert("오류가 발생했습니다.");
