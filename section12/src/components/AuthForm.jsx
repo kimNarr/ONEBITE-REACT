@@ -166,7 +166,7 @@ const AuthForm = ({ onAuth }) => {
       setTimeout(() => {
         setLoading(true);
         nav("/", { replace: true });
-      }, 1500);
+      }, 50);
 
       // await new Promise((resolve) => setTimeout(resolve, 1000));
       // setLoading(true);
