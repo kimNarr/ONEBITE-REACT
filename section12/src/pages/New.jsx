@@ -25,10 +25,7 @@ const New = () => {
 
   return (
     <>
-      <Header
-        title={"새 일기 쓰기"}
-        leftChild={<Button onClick={() => nav(-1)} text={"<"} />}
-      />
+      <Header title={"새 일기 쓰기"} />
       <Editor onSubmit={onSubmit} />
     </>
   );

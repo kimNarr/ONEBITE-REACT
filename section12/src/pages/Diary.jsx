@@ -38,8 +38,10 @@ const Diary = () => {
         title={`${title} 일기`}
         leftChild={<Button text={"<"} onClick={() => nav(-1)} />}
         rightChild={
-          isOwner && ( // 작성자일 때만 수정 버튼 노출
+          isOwner ? ( // 작성자일 때만 수정 버튼 노출
             <Button text={"수정"} onClick={() => nav(`/edit/${params.id}`)} />
+          ) : (
+            <Button text={"+"} onClick={() => nav(`/new`)} />
           )
         }
       />

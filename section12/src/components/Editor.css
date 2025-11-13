@@ -1,5 +1,6 @@
 .Editor {
   padding: 10px;
+  height: calc(100dvh - 105px);
   display: flex;
   flex-direction: column;
   gap: 16px;

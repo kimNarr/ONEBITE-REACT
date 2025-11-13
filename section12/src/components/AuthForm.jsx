@@ -40,7 +40,7 @@ const AuthForm = ({ onAuth }) => {
     return !!data; // true = 중복 존재
   };
 
-  // ✅ 회원가입 또는 로그인 처리
+  // 회원가입 또는 로그인 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -122,7 +122,7 @@ const AuthForm = ({ onAuth }) => {
 
         user = newUser;
       } else {
-        // ✅ 로그인 처리
+        // 로그인 처리
         const { data: loginUser, error: loginError } = await supabase
           .from("users")
           .select("*")
@@ -143,14 +143,14 @@ const AuthForm = ({ onAuth }) => {
         user = loginUser;
       }
 
-      // ✅ 로그인 유지 설정
+      // 로그인 유지 설정
       if (isRememberId) {
         localStorage.setItem("rememberedUserId", userId);
       } else {
         localStorage.removeItem("rememberedUserId");
       }
 
-      // ✅ 로그인 성공 시
+      // 로그인 성공 시
       localStorage.setItem("user", JSON.stringify(user));
       onAuth(user);
 
@@ -164,7 +164,7 @@ const AuthForm = ({ onAuth }) => {
     }
   };
 
-  // ✅ 로딩 표시
+  // 로딩 표시
   if (loading) {
     return (
       <Loading
@@ -191,7 +191,7 @@ const AuthForm = ({ onAuth }) => {
           <p className="sub-title">(감정일기장)</p>
         </div>
 
-        {/* ✅ 탭 전환 */}
+        {/* 탭 전환 */}
         <div className="Tab">
           <ul>
             <li
@@ -209,7 +209,7 @@ const AuthForm = ({ onAuth }) => {
           </ul>
         </div>
 
-        {/* ✅ 로그인 / 회원가입 폼 */}
+        {/* 로그인 / 회원가입 폼 */}
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="FormWrap">
             <input
