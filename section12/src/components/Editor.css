@@ -1,6 +1,5 @@
 .Editor {
   padding: 10px;
-  height: fit-content;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -12,7 +11,7 @@
 .Editor section h4 {
   font-size: 18px;
   font-weight: normal;
-  margin-bottom: 8px;
+  line-height: 24px;
 }
 .Editor .date_section input,
 textarea {
@@ -22,9 +21,13 @@ textarea {
   font-size: 20px;
   padding: 10px 20px;
 }
+.Editor .content_section {
+  height: 100%;
+}
 .Editor .content_section textarea {
   width: 100%;
   min-height: 200px;
+  height: calc(100% - 24px);
   resize: none;
   box-sizing: border-box;
   padding: 20px;
@@ -41,11 +44,13 @@ textarea {
   justify-content: flex-start;
   gap: 10px;
 }
-
-.Editor .content_section {
-}
 .Editor .button_section {
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
-  padding: 20px 0;
+  gap: 8px;
+}
+
+.Editor .button_section button {
+  flex: 1;
 }

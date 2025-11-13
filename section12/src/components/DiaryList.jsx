@@ -87,6 +87,7 @@ const DiaryList = ({ data, filterDate, onFilterDateChange, currentUserId }) => {
         )}
       </div>
       <div className="new_diary">
+        <Button text={"HOME"} onClick={() => nav("/")} />
         <Button
           text={"새 일기 +"}
           type={"POSITIVE"}

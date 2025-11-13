@@ -124,17 +124,18 @@ const AccountPage = () => {
       <Header
         title={"계정 관리"}
         leftChild={<Button onClick={() => nav(-1)} text={"<"} />}
+        rightChild={<Button onClick={() => nav("/new")} text={"+"} />}
       />
       <section className="AccountPage">
         {/* 아이디 */}
         <div className="user_id">
-          <label>아이디:</label>
+          <label>아이디</label>
           <span>{user.user_id}</span>
         </div>
 
         {/* 닉네임 */}
         <div className="nickname">
-          <label>닉네임:</label>
+          <label>닉네임</label>
           <input
             type="text"
             value={nickname}
@@ -145,7 +146,7 @@ const AccountPage = () => {
 
         {/* 비밀번호 */}
         <div className="password">
-          <label>비밀번호:</label>
+          <label>비밀번호</label>
           <input
             type="password"
             placeholder="새 비밀번호"
@@ -157,7 +158,7 @@ const AccountPage = () => {
 
         {/* 이메일 */}
         <div className="email">
-          <label>이메일:</label>
+          <label>이메일</label>
           <input
             type="email"
             placeholder="이메일 입력"

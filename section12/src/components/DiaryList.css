@@ -75,9 +75,15 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
+  gap: 8px;
 }
 
 .DiaryList .new_diary button {
   flex: 1;
   font-size: 16px;
+}
+
+.DiaryList .new_diary button:first-child {
+  width: 100px;
+  flex: none;
 }

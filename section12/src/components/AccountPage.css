@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 20px;
 }
 .AccountPage > div {
   display: flex;
@@ -12,12 +12,17 @@
 .AccountPage > div label {
   display: inline-block;
   width: 60px;
+  align-content: center;
 }
 
 .AccountPage > div input {
   width: 100%;
   flex: 1;
   margin-right: 10px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid rgb(203, 203, 203);
+  padding-left: 10px;
 }
 
 .AccountPage > div button {
@@ -25,6 +30,11 @@
   margin-left: auto;
 }
 .AccountPage .user_id {
+}
+
+.AccountPage .user_id span {
+  display: block;
+  padding-left: 10px;
 }
 .AccountPage .nickname {
 }
